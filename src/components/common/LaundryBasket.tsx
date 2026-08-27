@@ -1,141 +1,152 @@
 import { clsx } from "clsx";
 
-export interface LoadOption {
-  kg: number;
-  label: string;
-  description: string;
-  fillPercent: number;
-}
+export const MAX_KG = 15;
 
-export const KG_LOAD_OPTIONS: LoadOption[] = [
-  { kg: 3, label: "Small load", description: "A few daily outfits or a light basket", fillPercent: 30 },
-  { kg: 5, label: "Medium load", description: "Good for a typical basket of clothes", fillPercent: 50 },
-  { kg: 7, label: "Large load", description: "A full basket — bedding and towels too", fillPercent: 70 },
-  { kg: 10, label: "Extra large load", description: "An overflowing basket or two loads", fillPercent: 95 },
-];
+export function getLoadLabel(kg: number): { label: string; description: string } {
+  if (kg <= 3) return { label: "Small load", description: "A few daily outfits or a light basket" };
+  if (kg <= 6) return { label: "Medium load", description: "Good for a typical basket of clothes" };
+  if (kg <= 9) return { label: "Large load", description: "A full basket — bedding and towels too" };
+  return { label: "Extra large load", description: "An overflowing basket or two loads" };
+}
 
 interface LaundryBasketProps {
   fillPercent: number;
-  selected: boolean;
   size?: number;
   className?: string;
 }
 
-export function LaundryBasket({ fillPercent, selected, size = 64, className }: LaundryBasketProps) {
-  const fillHeight = (fillPercent / 100) * 38;
-  const yTop = 46 - fillHeight;
+export function LaundryBasket({ fillPercent, size = 160, className }: LaundryBasketProps) {
+  const clamped = Math.max(0, Math.min(100, fillPercent));
+  const fillHeight = (clamped / 100) * 40;
+  const yTop = 50 - fillHeight;
+  const hasBumps = clamped > 35;
+  const bumpCount = clamped > 80 ? 4 : clamped > 55 ? 3 : clamped > 35 ? 2 : 0;
 
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 64 64"
+      viewBox="0 0 100 100"
       fill="none"
-      className={clsx("transition-transform duration-300", className)}
+      className={clsx("transition-all duration-500 ease-out", className)}
     >
-      {/* Basket body */}
+      {/* Handle */}
       <path
-        d="M14 22 L50 22 L46 54 Q46 56 44 56 L20 56 Q18 56 18 54 Z"
-        className={clsx(
-          "transition-colors duration-300",
-          selected ? "fill-primary-50" : "fill-neutral-50",
-        )}
-        stroke={selected ? "#1a80f5" : "#cbd5e1"}
+        d="M28 22 Q50 6 72 22"
+        fill="none"
+        stroke="#94a3b8"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+
+      {/* Basket rim — oval at top */}
+      <ellipse
+        cx="50"
+        cy="22"
+        rx="28"
+        ry="5"
+        fill="#e2e8f0"
+        stroke="#cbd5e1"
         strokeWidth="1.5"
       />
-      {/* Basket rim */}
-      <rect
-        x="12"
-        y="18"
-        width="40"
-        height="6"
-        rx="2"
-        className={clsx(
-          "transition-colors duration-300",
-          selected ? "fill-primary-100" : "fill-neutral-100",
-        )}
-        stroke={selected ? "#1a80f5" : "#cbd5e1"}
+
+      {/* Basket body — trapezoid with rounded bottom */}
+      <path
+        d="M22 22 L78 22 L72 78 Q72 82 68 82 L32 82 Q28 82 28 78 Z"
+        fill="#f8fafc"
+        stroke="#cbd5e1"
         strokeWidth="1.5"
       />
-      {/* Weave lines */}
-      <line x1="22" y1="28" x2="22" y2="52" stroke={selected ? "#8ed8ff" : "#e2e8f0"} strokeWidth="1" />
-      <line x1="32" y1="28" x2="32" y2="52" stroke={selected ? "#8ed8ff" : "#e2e8f0"} strokeWidth="1" />
-      <line x1="42" y1="28" x2="42" y2="52" stroke={selected ? "#8ed8ff" : "#e2e8f0"} strokeWidth="1" />
-      <line x1="18" y1="38" x2="46" y2="38" stroke={selected ? "#8ed8ff" : "#e2e8f0"} strokeWidth="1" />
-      {/* Clothes fill */}
-      <path
-        d={`M18 ${yTop} L46 ${yTop} L44 54 Q44 55 43 55 L21 55 Q20 55 20 54 Z`}
-        className={clsx(
-          "transition-all duration-500 ease-out",
-          selected ? "fill-primary-400" : "fill-neutral-300",
-        )}
+
+      {/* Inner shadow at rim */}
+      <ellipse
+        cx="50"
+        cy="22"
+        rx="25"
+        ry="3.5"
+        fill="#e2e8f0"
+        opacity="0.6"
       />
-      {/* Clothes bumps on top */}
-      {fillPercent >= 50 && (
-        <circle cx="26" cy={yTop} r="4" className={clsx("transition-all duration-500", selected ? "fill-primary-400" : "fill-neutral-300")} />
-      )}
-      {fillPercent >= 70 && (
-        <circle cx="36" cy={yTop - 1} r="4.5" className={clsx("transition-all duration-500", selected ? "fill-primary-500" : "fill-neutral-400")} />
-      )}
-      {fillPercent >= 90 && (
-        <circle cx="31" cy={yTop - 4} r="4" className={clsx("transition-all duration-500", selected ? "fill-primary-500" : "fill-neutral-400")} />
-      )}
+
+      {/* Weave pattern — vertical */}
+      <line x1="32" y1="26" x2="31" y2="78" stroke="#e2e8f0" strokeWidth="1.2" />
+      <line x1="42" y1="26" x2="41" y2="78" stroke="#e2e8f0" strokeWidth="1.2" />
+      <line x1="50" y1="26" x2="50" y2="78" stroke="#e2e8f0" strokeWidth="1.2" />
+      <line x1="58" y1="26" x2="59" y2="78" stroke="#e2e8f0" strokeWidth="1.2" />
+      <line x1="68" y1="26" x2="69" y2="78" stroke="#e2e8f0" strokeWidth="1.2" />
+
+      {/* Weave pattern — horizontal */}
+      <line x1="26" y1="36" x2="74" y2="36" stroke="#e2e8f0" strokeWidth="1.2" />
+      <line x1="27" y1="48" x2="73" y2="48" stroke="#e2e8f0" strokeWidth="1.2" />
+      <line x1="28" y1="60" x2="72" y2="60" stroke="#e2e8f0" strokeWidth="1.2" />
+      <line x1="29" y1="72" x2="71" y2="72" stroke="#e2e8f0" strokeWidth="1.2" />
+
+      {/* Clothes fill — clipped to basket interior */}
+      <defs>
+        <clipPath id="basket-clip">
+          <path d="M24 24 L76 24 L71 77 Q71 80 67 80 L33 80 Q29 80 29 77 Z" />
+        </clipPath>
+      </defs>
+
+      <g clipPath="url(#basket-clip)">
+        {/* Main clothes mass */}
+        <path
+          d={`M24 ${yTop} L76 ${yTop} L72 82 L28 82 Z`}
+          className="fill-primary-400 transition-all duration-500 ease-out"
+        />
+
+        {/* Clothes bumps on top — appear as fill increases */}
+        {hasBumps && bumpCount >= 1 && (
+          <circle
+            cx="38"
+            cy={yTop}
+            r="7"
+            className="fill-primary-400 transition-all duration-500 ease-out"
+          />
+        )}
+        {hasBumps && bumpCount >= 2 && (
+          <circle
+            cx="58"
+            cy={yTop - 2}
+            r="8"
+            className="fill-primary-500 transition-all duration-500 ease-out"
+          />
+        )}
+        {hasBumps && bumpCount >= 3 && (
+          <circle
+            cx="48"
+            cy={yTop - 6}
+            r="7"
+            className="fill-primary-500 transition-all duration-500 ease-out"
+          />
+        )}
+        {hasBumps && bumpCount >= 4 && (
+          <circle
+            cx="66"
+            cy={yTop - 4}
+            r="6"
+            className="fill-primary-600 transition-all duration-500 ease-out"
+          />
+        )}
+
+        {/* Texture dots on clothes */}
+        <circle cx="35" cy={yTop + 12} r="1.5" fill="#8ed8ff" opacity="0.5" />
+        <circle cx="55" cy={yTop + 18} r="1.5" fill="#8ed8ff" opacity="0.5" />
+        <circle cx="45" cy={yTop + 26} r="1.5" fill="#8ed8ff" opacity="0.5" />
+        <circle cx="62" cy={yTop + 10} r="1.5" fill="#8ed8ff" opacity="0.5" />
+      </g>
+
+      {/* Rim highlight */}
+      <ellipse
+        cx="50"
+        cy="20.5"
+        rx="26"
+        ry="3"
+        fill="none"
+        stroke="#f1f5f9"
+        strokeWidth="1"
+        opacity="0.7"
+      />
     </svg>
-  );
-}
-
-interface BasketOptionCardProps {
-  option: LoadOption;
-  selected: boolean;
-  pricePerKg: number;
-  onSelect: () => void;
-}
-
-export function BasketOptionCard({ option, selected, pricePerKg, onSelect }: BasketOptionCardProps) {
-  return (
-    <button
-      onClick={onSelect}
-      className={clsx(
-        "card w-full p-4 text-left transition-all duration-200 active:scale-[0.98]",
-        selected
-          ? "ring-2 ring-primary-500 bg-primary-50/40"
-          : "hover:shadow-card-hover",
-      )}
-    >
-      <div className="flex items-center gap-4">
-        <div
-          className={clsx(
-            "flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl transition-colors duration-300",
-            selected ? "bg-primary-50" : "bg-neutral-50",
-          )}
-        >
-          <LaundryBasket fillPercent={option.fillPercent} selected={selected} size={56} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline gap-2">
-            <span className="font-display text-xl font-extrabold text-neutral-900">{option.kg} kg</span>
-            <span className="text-sm font-semibold text-neutral-500">{option.label}</span>
-          </div>
-          <p className="mt-0.5 text-sm text-neutral-500">{option.description}</p>
-          <p className="mt-1.5 text-sm font-bold text-primary-700">
-            ₵{option.kg * pricePerKg}
-          </p>
-        </div>
-        <div
-          className={clsx(
-            "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-200",
-            selected
-              ? "border-primary-600 bg-primary-600"
-              : "border-neutral-300",
-          )}
-        >
-          {selected && (
-            <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5 text-white">
-              <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          )}
-        </div>
-      </div>
-    </button>
   );
 }

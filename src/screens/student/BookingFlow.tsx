@@ -5,7 +5,7 @@ import { dummyLaundries } from "../../data";
 import { useAppStore } from "../../store/appStore";
 import type { Booking, PickupOption, Service } from "../../models";
 import { clsx } from "clsx";
-import { KG_LOAD_OPTIONS, BasketOptionCard } from "../../components/common/LaundryBasket";
+import { LaundryBasket, MAX_KG, getLoadLabel } from "../../components/common/LaundryBasket";
 
 // 4-step booking flow: service → quantity → pickup → date/time, with a
 // live price summary and Confirm Booking CTA. Each step fits within the
@@ -20,6 +20,8 @@ export function BookingFlow() {
   const [step, setStep] = useState(0);
   const [service, setService] = useState<Service | null>(null);
   const [quantity, setQuantity] = useState(5);
+  const fillPercent = service?.unit === "kg" ? Math.min(100, (quantity / MAX_KG) * 100) : 0;
+  const loadInfo = getLoadLabel(quantity);
   const [pickup, setPickup] = useState<PickupOption>("Laundry pickup");
   const [slot, setSlot] = useState("Tomorrow 10AM");
 
@@ -145,19 +147,59 @@ export function BookingFlow() {
             </div>
 
             {service.unit === "kg" ? (
-              <div>
-                <p className="mb-3 text-sm font-medium text-neutral-500">How much laundry?</p>
-                <div className="space-y-3">
-                  {KG_LOAD_OPTIONS.map((opt) => (
-                    <BasketOptionCard
-                      key={opt.kg}
-                      option={opt}
-                      selected={quantity === opt.kg}
-                      pricePerKg={service.price}
-                      onSelect={() => setQuantity(opt.kg)}
-                    />
-                  ))}
+              <div className="card p-6">
+                <p className="text-center text-sm font-medium text-neutral-500">How much laundry?</p>
+
+                {/* Basket illustration */}
+                <div className="mt-4 flex justify-center">
+                  <LaundryBasket fillPercent={fillPercent} size={150} />
                 </div>
+
+                {/* Load label + description */}
+                <div className="mt-3 text-center">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-3 py-1">
+                    <span className="font-display text-sm font-bold text-primary-700">{loadInfo.label}</span>
+                  </span>
+                  <p className="mt-1.5 text-xs text-neutral-500">{loadInfo.description}</p>
+                </div>
+
+                {/* Quantity stepper */}
+                <div className="mt-5 flex items-center justify-center gap-6">
+                  <button
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-100 text-2xl font-bold text-neutral-700 active:scale-95 transition-transform"
+                  >
+                    −
+                  </button>
+                  <div className="text-center">
+                    <span className="font-display text-4xl font-extrabold text-neutral-900">{quantity}</span>
+                    <span className="ml-1 text-lg font-semibold text-neutral-400">kg</span>
+                  </div>
+                  <button
+                    onClick={() => setQuantity((q) => Math.min(MAX_KG, q + 1))}
+                    className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-600 text-2xl font-bold text-white active:scale-95 transition-transform"
+                  >
+                    +
+                  </button>
+                </div>
+
+                {/* Fill bar */}
+                <div className="mt-5">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-100">
+                    <div
+                      className="h-full rounded-full bg-primary-500 transition-all duration-500 ease-out"
+                      style={{ width: `${fillPercent}%` }}
+                    />
+                  </div>
+                  <div className="mt-1.5 flex justify-between text-[11px] font-medium text-neutral-400">
+                    <span>1 kg</span>
+                    <span>{MAX_KG} kg</span>
+                  </div>
+                </div>
+
+                <p className="mt-4 text-center text-sm text-neutral-500">
+                  Subtotal: <span className="font-bold text-neutral-900">₵{total}</span>
+                </p>
               </div>
             ) : (
               <div className="card p-6 text-center">
