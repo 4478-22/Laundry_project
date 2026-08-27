@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LayoutDashboard, Package, Users, Store, CircleAlert as AlertCircle, CreditCard, ChartBar as BarChart3, Settings, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Package, Users, Store, CircleAlert as AlertCircle, ChartBar as BarChart3, Settings, LogOut, Menu, X } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 import { AdminOverview } from "./AdminOverview";
 import { AdminOrders } from "./AdminOrders";
 import { AdminCustomers } from "./AdminCustomers";
 import { AdminPartners } from "./AdminPartners";
 import { AdminIssues } from "./AdminIssues";
-import { AdminSubscriptions } from "./AdminSubscriptions";
 import { AdminReports } from "./AdminReports";
 import { AdminSettings } from "./AdminSettings";
 import { clsx } from "clsx";
@@ -18,7 +17,6 @@ export type AdminSection =
   | "customers"
   | "partners"
   | "issues"
-  | "subscriptions"
   | "reports"
   | "settings";
 
@@ -28,7 +26,6 @@ const navItems: { key: AdminSection; label: string; icon: React.ReactNode }[] = 
   { key: "customers", label: "Customers", icon: <Users className="h-5 w-5" /> },
   { key: "partners", label: "Laundry Partners", icon: <Store className="h-5 w-5" /> },
   { key: "issues", label: "Issues", icon: <AlertCircle className="h-5 w-5" /> },
-  { key: "subscriptions", label: "Subscriptions", icon: <CreditCard className="h-5 w-5" /> },
   { key: "reports", label: "Reports", icon: <BarChart3 className="h-5 w-5" /> },
   { key: "settings", label: "Settings", icon: <Settings className="h-5 w-5" /> },
 ];
@@ -51,7 +48,6 @@ export function AdminApp() {
       case "customers": return <AdminCustomers />;
       case "partners": return <AdminPartners />;
       case "issues": return <AdminIssues />;
-      case "subscriptions": return <AdminSubscriptions />;
       case "reports": return <AdminReports />;
       case "settings": return <AdminSettings />;
     }

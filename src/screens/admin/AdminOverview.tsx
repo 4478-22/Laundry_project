@@ -1,6 +1,6 @@
-import { Users, Store, Package, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, CreditCard, TrendingUp } from "lucide-react";
+import { Users, Store, Package, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, TrendingUp } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
-import { adminPartners, adminStudents, adminIssues, adminSubscriptions } from "../../data";
+import { adminPartners, adminStudents, adminIssues } from "../../data";
 import type { AdminSection } from "./AdminApp";
 import { clsx } from "clsx";
 
@@ -28,7 +28,7 @@ export function AdminOverview({ onNavigate }: { onNavigate: (s: AdminSection) =>
   const activeOrders = bookings.filter((b) => b.status !== "Completed" && b.status !== "Ready").length;
   const completedOrders = bookings.filter((b) => b.status === "Completed").length;
   const openIssues = adminIssues.filter((i) => i.status !== "Resolved").length;
-  const activeSubs = adminSubscriptions.filter((s) => s.status === "Active").length;
+  const totalRevenue = bookings.reduce((sum, b) => sum + b.total, 0);
 
   const recentOrders = bookings.slice(0, 5);
   const recentPartners = adminPartners.slice(0, 3);
@@ -49,7 +49,7 @@ export function AdminOverview({ onNavigate }: { onNavigate: (s: AdminSection) =>
         <StatCard icon={<Package className="h-5 w-5 text-accent-600" />} label="Active Orders" value={activeOrders} tint="bg-accent-50" />
         <StatCard icon={<CheckCircle2 className="h-5 w-5 text-secondary-600" />} label="Completed Orders" value={completedOrders} tint="bg-secondary-50" />
         <StatCard icon={<AlertCircle className="h-5 w-5 text-error-600" />} label="Open Issues" value={openIssues} tint="bg-error-50" />
-        <StatCard icon={<CreditCard className="h-5 w-5 text-primary-600" />} label="Active Subscriptions" value={activeSubs} tint="bg-primary-50" />
+        <StatCard icon={<TrendingUp className="h-5 w-5 text-primary-600" />} label="Total Revenue" value={`₵${totalRevenue.toLocaleString()}`} tint="bg-primary-50" />
       </div>
 
       {/* Recent activity columns */}

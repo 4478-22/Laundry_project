@@ -13,6 +13,5 @@ export {
   adminPartners,
   adminStudents,
   adminIssues,
-  adminSubscriptions,
   pendingPartners,
 } from "./dummy_admin";

@@ -18,6 +18,8 @@ import { AdminApp } from "./screens/admin/AdminApp";
 
 // Top-level router. Entry flow: splash → onboarding → mode select → auth → app.
 // Auth is simulated — any input logs in.
+// The admin panel renders full-width (outside the phone frame) so its
+// sidebar + table layouts work on desktop.
 
 function RootRouter() {
   const navigate = useNavigate();
@@ -30,55 +32,63 @@ function RootRouter() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
+  // Admin routes render full-width, outside the phone frame.
+  if (location.pathname.startsWith("/admin")) {
+    return (
+      <Routes>
+        <Route
+          path="/admin/*"
+          element={isAuthed ? <AdminApp /> : <Navigate to="/auth/admin" replace />}
+        />
+      </Routes>
+    );
+  }
+
   return (
-    <Routes>
-      <Route path="/" element={<SplashScreen onNext={() => navigate("/onboarding")} />} />
-      <Route
-        path="/onboarding"
-        element={
-          <OnboardingScreen
-            onGetStarted={() => navigate("/mode")}
-            onLogin={() => navigate("/auth/student")}
-          />
-        }
-      />
-      <Route
-        path="/mode"
-        element={
-          <ModeSelectScreen
-            onSelectStudent={() => navigate("/auth/student")}
-            onSelectPartner={() => navigate("/auth/partner")}
-            onSelectAdmin={() => navigate("/auth/admin")}
-          />
-        }
-      />
-      <Route
-        path="/auth/:mode"
-        element={<AuthScreen onAuthed={() => navigate(mode === "partner" ? "/partner" : mode === "admin" ? "/admin" : "/student")} />}
-      />
-      <Route
-        path="/student/*"
-        element={isAuthed ? <StudentApp /> : <Navigate to="/auth/student" replace />}
-      />
-      <Route
-        path="/partner/*"
-        element={isAuthed ? <PartnerApp /> : <Navigate to="/auth/partner" replace />}
-      />
-      <Route
-        path="/admin/*"
-        element={isAuthed ? <AdminApp /> : <Navigate to="/auth/admin" replace />}
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <div className="phone-frame screen-enter">
+      <Routes>
+        <Route path="/" element={<SplashScreen onNext={() => navigate("/onboarding")} />} />
+        <Route
+          path="/onboarding"
+          element={
+            <OnboardingScreen
+              onGetStarted={() => navigate("/mode")}
+              onLogin={() => navigate("/auth/student")}
+            />
+          }
+        />
+        <Route
+          path="/mode"
+          element={
+            <ModeSelectScreen
+              onSelectStudent={() => navigate("/auth/student")}
+              onSelectPartner={() => navigate("/auth/partner")}
+              onSelectAdmin={() => navigate("/auth/admin")}
+            />
+          }
+        />
+        <Route
+          path="/auth/:mode"
+          element={<AuthScreen onAuthed={() => navigate(mode === "partner" ? "/partner" : mode === "admin" ? "/admin" : "/student")} />}
+        />
+        <Route
+          path="/student/*"
+          element={isAuthed ? <StudentApp /> : <Navigate to="/auth/student" replace />}
+        />
+        <Route
+          path="/partner/*"
+          element={isAuthed ? <PartnerApp /> : <Navigate to="/auth/partner" replace />}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
   );
 }
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="phone-frame screen-enter">
-        <RootRouter />
-      </div>
+      <RootRouter />
     </BrowserRouter>
   );
 }
