@@ -40,39 +40,55 @@ export function PartnerDashboard() {
       <div className="px-5 mt-5">
         <div className="card p-5">
           <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className={clsx(
-                "flex h-11 w-11 items-center justify-center rounded-2xl transition-colors",
-                isAcceptingOrders ? "bg-secondary-50 text-secondary-600" : "bg-neutral-100 text-neutral-400",
-              )}>
-                <Store className="h-5 w-5" />
+            <div className="flex items-center gap-3 min-w-0">
+              <span
+                className={clsx(
+                  "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors duration-300",
+                  isAcceptingOrders
+                    ? "bg-secondary-50 text-secondary-600"
+                    : "bg-neutral-100 text-neutral-400",
+                )}
+              >
+                <Store className="h-[18px] w-[18px]" />
               </span>
-              <div>
+              <div className="min-w-0">
                 <p className="font-display font-bold text-neutral-900">Accepting Orders</p>
-                <p className="text-sm text-neutral-500 mt-0.5">
+                <p className="mt-0.5 text-sm leading-relaxed text-neutral-500">
                   {isAcceptingOrders
                     ? "Customers can currently place bookings."
-                    : "Your business is currently not accepting new bookings."}
+                    : "Customers cannot currently place new bookings."}
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => setAcceptingOrders(!isAcceptingOrders)}
-              role="switch"
-              aria-checked={isAcceptingOrders}
-              aria-label="Toggle accepting orders"
-              className={clsx(
-                "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200",
-                isAcceptingOrders ? "bg-secondary-500" : "bg-neutral-300",
-              )}
-            >
+            <div className="flex shrink-0 items-center gap-2.5">
               <span
                 className={clsx(
-                  "absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200",
-                  isAcceptingOrders ? "translate-x-6" : "translate-x-1",
+                  "text-xs font-bold uppercase tracking-wide transition-colors duration-300",
+                  isAcceptingOrders ? "text-secondary-600" : "text-neutral-400",
                 )}
-              />
-            </button>
+              >
+                {isAcceptingOrders ? "ON" : "OFF"}
+              </span>
+              <button
+                onClick={() => setAcceptingOrders(!isAcceptingOrders)}
+                role="switch"
+                aria-checked={isAcceptingOrders}
+                aria-label="Toggle accepting orders"
+                className={clsx(
+                  "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ease-in-out",
+                  isAcceptingOrders ? "bg-secondary-200" : "bg-neutral-200",
+                )}
+              >
+                <span
+                  className={clsx(
+                    "absolute top-1 h-5 w-5 rounded-full shadow-sm transition-all duration-300 ease-in-out",
+                    isAcceptingOrders
+                      ? "translate-x-6 bg-secondary-600"
+                      : "translate-x-1 bg-neutral-400",
+                  )}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>
