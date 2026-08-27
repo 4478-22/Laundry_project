@@ -34,7 +34,7 @@ interface BottomNavProps {
 export function BottomNav({ mode, active, onChange }: BottomNavProps) {
   const tabs = mode === "customer" ? customerTabs : partnerTabs;
   return (
-    <nav className="sticky bottom-0 z-30 border-t border-neutral-100 bg-white/95 backdrop-blur-md px-2 py-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-neutral-100 bg-white/95 backdrop-blur-md px-2 py-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
       <div className="flex items-center justify-around">
         {tabs.map((tab) => {
           const isActive = tab.key === active;

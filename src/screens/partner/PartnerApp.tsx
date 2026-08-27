@@ -23,7 +23,7 @@ export function PartnerApp() {
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50">
-      <div className="flex-1">
+      <div className="flex-1 pb-20">
         <Routes>
           <Route index element={<PartnerDashboard />} />
           <Route path="orders" element={<IncomingOrders />} />
