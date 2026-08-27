@@ -5,6 +5,7 @@ import { dummyLaundries } from "../../data";
 import { useAppStore } from "../../store/appStore";
 import type { Booking, PickupOption, Service } from "../../models";
 import { clsx } from "clsx";
+import { KG_LOAD_OPTIONS, BasketOptionCard } from "../../components/common/LaundryBasket";
 
 // 4-step booking flow: service → quantity → pickup → date/time, with a
 // live price summary and Confirm Booking CTA. Each step fits within the
@@ -18,7 +19,7 @@ export function BookingFlow() {
 
   const [step, setStep] = useState(0);
   const [service, setService] = useState<Service | null>(null);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(5);
   const [pickup, setPickup] = useState<PickupOption>("Laundry pickup");
   const [slot, setSlot] = useState("Tomorrow 10AM");
 
@@ -137,35 +138,53 @@ export function BookingFlow() {
 
         {/* Step 2: Quantity */}
         {step === 1 && service && (
-          <div className="animate-fade-in">
+          <div className="animate-fade-in overflow-y-auto no-scrollbar">
             <div className="card p-5 mb-4">
               <h3 className="font-display font-bold text-neutral-900">{service.name}</h3>
               <p className="text-sm text-neutral-500">₵{service.price} per {service.unit}</p>
             </div>
-            <div className="card p-6 text-center">
-              <p className="text-sm font-medium text-neutral-500">How much laundry?</p>
-              <div className="mt-6 flex items-center justify-center gap-6">
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-100 text-2xl font-bold text-neutral-700 active:scale-95 transition-transform"
-                >
-                  −
-                </button>
-                <div>
-                  <span className="font-display text-4xl font-extrabold text-neutral-900">{quantity}</span>
-                  <span className="ml-1 text-lg font-semibold text-neutral-400">{service.unit}</span>
+
+            {service.unit === "kg" ? (
+              <div>
+                <p className="mb-3 text-sm font-medium text-neutral-500">How much laundry?</p>
+                <div className="space-y-3">
+                  {KG_LOAD_OPTIONS.map((opt) => (
+                    <BasketOptionCard
+                      key={opt.kg}
+                      option={opt}
+                      selected={quantity === opt.kg}
+                      pricePerKg={service.price}
+                      onSelect={() => setQuantity(opt.kg)}
+                    />
+                  ))}
                 </div>
-                <button
-                  onClick={() => setQuantity((q) => Math.min(50, q + 1))}
-                  className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-600 text-2xl font-bold text-white active:scale-95 transition-transform"
-                >
-                  +
-                </button>
               </div>
-              <p className="mt-5 text-sm text-neutral-500">
-                Subtotal: <span className="font-bold text-neutral-900">₵{total}</span>
-              </p>
-            </div>
+            ) : (
+              <div className="card p-6 text-center">
+                <p className="text-sm font-medium text-neutral-500">How many items?</p>
+                <div className="mt-6 flex items-center justify-center gap-6">
+                  <button
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-100 text-2xl font-bold text-neutral-700 active:scale-95 transition-transform"
+                  >
+                    −
+                  </button>
+                  <div>
+                    <span className="font-display text-4xl font-extrabold text-neutral-900">{quantity}</span>
+                    <span className="ml-1 text-lg font-semibold text-neutral-400">{service.unit}</span>
+                  </div>
+                  <button
+                    onClick={() => setQuantity((q) => Math.min(50, q + 1))}
+                    className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-600 text-2xl font-bold text-white active:scale-95 transition-transform"
+                  >
+                    +
+                  </button>
+                </div>
+                <p className="mt-5 text-sm text-neutral-500">
+                  Subtotal: <span className="font-bold text-neutral-900">₵{total}</span>
+                </p>
+              </div>
+            )}
           </div>
         )}
 
