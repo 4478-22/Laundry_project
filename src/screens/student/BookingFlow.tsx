@@ -250,8 +250,26 @@ export function BookingFlow() {
         )}
       </div>
 
-      {/* Price summary + CTA */}
-      {service && (
+      {/* Price summary — always visible once a service is selected */}
+      {service && step < 3 && (
+        <div className="sticky bottom-0 bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-neutral-400 font-medium">
+                {step === 1 ? "Subtotal" : "Total"}
+              </p>
+              <p className="font-display text-2xl font-extrabold text-neutral-900">₵{total}</p>
+            </div>
+            <div className="text-right text-xs text-neutral-500">
+              <p>{service.name}</p>
+              <p>{quantity}{service.unit}{step >= 2 && ` · ${pickup}`}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Price summary + confirm CTA — only on the schedule page */}
+      {service && step === 3 && (
         <div className="sticky bottom-0 bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="mb-3 flex items-center justify-between">
             <div>
@@ -265,7 +283,7 @@ export function BookingFlow() {
           </div>
           <button
             onClick={confirm}
-            disabled={step < 3 || !isAcceptingOrders}
+            disabled={!isAcceptingOrders}
             className="btn-primary w-full disabled:opacity-40"
           >
             {isAcceptingOrders ? "Confirm Booking" : "Not Accepting Orders"}
