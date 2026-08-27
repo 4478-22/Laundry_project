@@ -11,10 +11,10 @@ import { SkeletonList } from "../../components/common/LoadingSkeleton";
 type FilterServiceType = "Any" | "Wash & Fold" | "Express Laundry" | "Ironing" | "Dry Cleaning";
 type SortOption = "recommended" | "nearest" | "highest-rated" | "lowest-price" | "fastest-service";
 
-// Customer home dashboard — Uber/Airbnb-style marketplace landing.
+// Student home dashboard — Uber/Airbnb-style marketplace landing.
 export function StudentHome() {
   const navigate = useNavigate();
-  const customer = useAppStore((s) => s.customer);
+  const student = useAppStore((s) => s.student);
   const savedIds = useAppStore((s) => s.savedLaundryIds);
   const [query, setQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -142,13 +142,13 @@ export function StudentHome() {
       <div className="rounded-b-4xl bg-gradient-to-b from-primary-600 to-primary-700 px-5 pb-6 pt-12 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-primary-100">Hello, {customer.name} 👋</p>
+            <p className="text-sm font-medium text-primary-100">Hello, {student.name} 👋</p>
             <div className="mt-1 flex items-center gap-1.5">
               <MapPin className="h-4 w-4 text-primary-100" />
               <span className="text-sm font-semibold">Near you</span>
             </div>
           </div>
-          <button onClick={() => navigate("/customer/notifications")} className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 backdrop-blur transition-transform active:scale-95" aria-label="Notifications">
+          <button onClick={() => navigate("/student/notifications")} className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 backdrop-blur transition-transform active:scale-95" aria-label="Notifications">
             <Bell className="h-5 w-5" />
             <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-accent-400 ring-2 ring-primary-700" />
           </button>
@@ -180,7 +180,7 @@ export function StudentHome() {
                     type="button"
                     onClick={() => {
                       if (suggestion.type === "business") {
-                        navigate(`/customer/laundry/${suggestion.value}`);
+                        navigate(`/student/laundry/${suggestion.value}`);
                         return;
                       }
                       setQuery(suggestion.value);
@@ -258,7 +258,7 @@ export function StudentHome() {
         {loading ? <SkeletonList count={3} /> : filteredLaundries.length > 0 ? (
           <div className="space-y-4">
             {filteredLaundries.map((laundry) => (
-              <LaundryCard key={laundry.id} laundry={laundry} onViewDetails={() => navigate(`/customer/laundry/${laundry.id}`)} />
+              <LaundryCard key={laundry.id} laundry={laundry} onViewDetails={() => navigate(`/student/laundry/${laundry.id}`)} />
             ))}
           </div>
         ) : (
@@ -271,7 +271,7 @@ export function StudentHome() {
           <SectionHeader title="Saved Laundries" />
           <div className="space-y-4">
             {savedLaundries.map((laundry) => (
-              <LaundryCard key={laundry.id} laundry={laundry} onViewDetails={() => navigate(`/customer/laundry/${laundry.id}`)} />
+              <LaundryCard key={laundry.id} laundry={laundry} onViewDetails={() => navigate(`/student/laundry/${laundry.id}`)} />
             ))}
           </div>
         </div>

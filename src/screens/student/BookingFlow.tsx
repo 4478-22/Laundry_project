@@ -42,7 +42,7 @@ export function BookingFlow() {
       id,
       laundryId: laundry.id,
       laundryName: laundry.name,
-      customerName: "Daniel",
+      studentName: "Daniel",
       service,
       quantity,
       pickupOption: pickup,
@@ -56,7 +56,7 @@ export function BookingFlow() {
       commissionStatus: "Collected",
     };
     addBooking(booking);
-    navigate(`/customer/confirm/${id}`, { replace: true });
+    navigate(`/student/confirm/${id}`, { replace: true });
   };
 
   const steps = ["Service", "Quantity", "Pickup", "Schedule"];
@@ -173,7 +173,7 @@ export function BookingFlow() {
         {step === 2 && (
           <div className="space-y-3 animate-fade-in">
             <p className="text-sm text-neutral-500">How should we handle your laundry?</p>
-            {(["Laundry pickup", "Customer drops off"] as PickupOption[]).map((opt) => (
+            {(["Laundry pickup", "Student drops off"] as PickupOption[]).map((opt) => (
               <button
                 key={opt}
                 onClick={() => {

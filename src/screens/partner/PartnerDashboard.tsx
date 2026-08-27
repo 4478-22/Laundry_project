@@ -55,8 +55,8 @@ export function PartnerDashboard() {
                 <p className="font-display font-bold text-neutral-900">Accepting Orders</p>
                 <p className="mt-0.5 text-sm leading-relaxed text-neutral-500">
                   {isAcceptingOrders
-                    ? "Customers can currently place bookings."
-                    : "Customers cannot currently place new bookings."}
+                    ? "Students can currently place bookings."
+                    : "Students cannot currently place new bookings."}
                 </p>
               </div>
             </div>
@@ -150,7 +150,7 @@ export function PartnerDashboard() {
                   <Package className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="font-semibold text-neutral-900">{o.customerName}</p>
+                  <p className="font-semibold text-neutral-900">{o.studentName}</p>
                   <p className="text-sm text-neutral-500">{o.service.name} · {o.quantity}{o.service.unit}</p>
                 </div>
               </div>

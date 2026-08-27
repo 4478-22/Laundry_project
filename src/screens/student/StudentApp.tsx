@@ -12,15 +12,15 @@ import { SettingsScreen } from "../shared/SettingsScreen";
 import { SupportCenter } from "../shared/SupportCenter";
 import { useAppStore } from "../../store/appStore";
 
-// Customer app shell. Owns nested routes for all customer screens and the
+// Student app shell. Owns nested routes for all student screens and the
 // bottom navigation. The active tab is derived from the current path.
-export function CustomerApp() {
+export function StudentApp() {
   const navigate = useNavigate();
   const location = useLocation();
-  const unreadCount = useAppStore((s) => s.notifications.filter((n) => n.unread && n.forMode === "customer").length);
+  const unreadCount = useAppStore((s) => s.notifications.filter((n) => n.unread && n.forMode === "student").length);
 
-  // Derive active tab from the first path segment under /customer.
-  const segment = location.pathname.replace("/customer/", "").split("/")[0];
+  // Derive active tab from the first path segment under /student.
+  const segment = location.pathname.replace("/student/", "").split("/")[0];
   const activeTab = ["home", "bookings", "notifications", "profile"].includes(segment)
     ? segment
     : "home";
@@ -46,10 +46,10 @@ export function CustomerApp() {
       </div>
       {!hideNav && (
         <BottomNav
-          mode="customer"
+          mode="student"
           active={activeTab}
           unreadCount={unreadCount}
-          onChange={(k) => navigate(k === "home" ? "/customer" : `/customer/${k}`)}
+          onChange={(k) => navigate(k === "home" ? "/student" : `/student/${k}`)}
         />
       )}
     </div>

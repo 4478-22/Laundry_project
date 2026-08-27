@@ -4,7 +4,7 @@ import type {
   AppMode,
   Booking,
   BusinessSettings,
-  CustomerUser,
+  StudentUser,
   Laundry,
   NotificationItem,
   OrderStatus,
@@ -27,7 +27,7 @@ interface AppState {
   mode: AppMode;
   isAuthed: boolean;
   isAcceptingOrders: boolean;
-  customer: CustomerUser;
+  student: StudentUser;
   bookings: Booking[];
   incomingOrders: Booking[];
   savedLaundryIds: string[];
@@ -51,11 +51,11 @@ interface AppState {
   updateBusinessService: (service: BusinessSettings["services"][number]) => void;
   deleteBusinessService: (id: string) => void;
   topUpWallet: (amount: number, provider: string) => void;
-  expireCustomerPoints: () => void;
+  expireStudentPoints: () => void;
   getLaundry: (id: string) => Laundry | undefined;
 }
 
-const defaultCustomer: CustomerUser = {
+const defaultStudent: StudentUser = {
   id: "u-daniel",
   name: "Daniel",
   phone: "+233 24 555 0192",
@@ -133,10 +133,10 @@ const defaultWallet: PartnerWalletState = {
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
-      mode: "customer",
+      mode: "student",
       isAuthed: false,
       isAcceptingOrders: true,
-      customer: defaultCustomer,
+      student: defaultStudent,
       bookings: dummyOrders,
       incomingOrders: dummyIncomingOrders,
       savedLaundryIds: ["l-cleanpro"],
@@ -209,7 +209,7 @@ export const useAppStore = create<AppState>()(
               time: "Just now",
               unread: true,
               tone: "secondary" as const,
-              forMode: "customer" as const,
+              forMode: "student" as const,
               group: "Today" as const,
             },
             ...s.notifications,
@@ -219,9 +219,9 @@ export const useAppStore = create<AppState>()(
         bookings: s.bookings.map((b) => (b.id === id ? stamp(b) : b)),
         incomingOrders: s.incomingOrders.map((b) => (b.id === id ? stamp(b) : b)),
         notifications: nextNotifications,
-        customer: shouldResetTimer
-          ? { ...s.customer, lastCompletedBookingAt: now }
-          : s.customer,
+        student: shouldResetTimer
+          ? { ...s.student, lastCompletedBookingAt: now }
+          : s.student,
       };
     }),
   acceptOrder: (id) =>
@@ -290,17 +290,17 @@ export const useAppStore = create<AppState>()(
         ],
       },
     })),
-  expireCustomerPoints: () =>
+  expireStudentPoints: () =>
     set((s) => {
-      if (!s.customer.lastCompletedBookingAt || s.customer.rewardsPoints <= 0) {
+      if (!s.student.lastCompletedBookingAt || s.student.rewardsPoints <= 0) {
         return {};
       }
-      const lastCompleted = new Date(s.customer.lastCompletedBookingAt);
+      const lastCompleted = new Date(s.student.lastCompletedBookingAt);
       const expiryThresholdMs = 90 * 24 * 60 * 60 * 1000;
       if (Date.now() - lastCompleted.getTime() >= expiryThresholdMs) {
         return {
-          customer: {
-            ...s.customer,
+          student: {
+            ...s.student,
             rewardsPoints: 0,
           },
         };
@@ -314,7 +314,7 @@ export const useAppStore = create<AppState>()(
       partialize: (s) => ({
         bookings: s.bookings,
         incomingOrders: s.incomingOrders,
-        customer: s.customer,
+        student: s.student,
         savedLaundryIds: s.savedLaundryIds,
         partnerWallet: s.partnerWallet,
         isAcceptingOrders: s.isAcceptingOrders,

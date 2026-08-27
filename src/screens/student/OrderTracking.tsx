@@ -2,23 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Check, Bell, ChevronLeft, Clock, Sparkles, X } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
-import { customerTimeline } from "../../data";
-import { toCustomerStage } from "../../models";
-import type { CustomerStage } from "../../models";
+import { studentTimeline } from "../../data";
+import { toStudentStage } from "../../models";
+import type { StudentStage } from "../../models";
 import { clsx } from "clsx";
 
-// Order tracking screen — simplified 3-stage timeline the customer sees:
+// Order tracking screen — simplified 3-stage timeline the student sees:
 // Booking Confirmed → Pickup Scheduled → Ready.
 // A live timer counts how long the order has been in progress and stops
 // automatically when the order reaches "Ready". A celebratory banner
-// alerts the customer the moment it's ready.
+// alerts the student the moment it's ready.
 export function OrderTracking() {
   const { bookingId } = useParams();
   const navigate = useNavigate();
   const booking = useAppStore((s) => s.bookings.find((b) => b.id === bookingId));
   const notifications = useAppStore((s) => s.notifications);
 
-  const currentStage = booking ? toCustomerStage(booking.status) : null;
+  const currentStage = booking ? toStudentStage(booking.status) : null;
   const isReady = currentStage === "Ready";
 
   // Live elapsed timer
@@ -27,7 +27,7 @@ export function OrderTracking() {
 
   // "Just became ready" detection — fires the alert once per visit
   const [showReadyAlert, setShowReadyAlert] = useState(false);
-  const prevStageRef = useRef<CustomerStage | null>(null);
+  const prevStageRef = useRef<StudentStage | null>(null);
 
   useEffect(() => {
     if (!booking) return;
@@ -84,12 +84,12 @@ export function OrderTracking() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-6">
         <p className="text-neutral-500">Order not found.</p>
-        <button onClick={() => navigate("/customer/bookings")} className="btn-primary">Home</button>
+        <button onClick={() => navigate("/student/bookings")} className="btn-primary">Home</button>
       </div>
     );
   }
 
-  const currentIndex = customerTimeline.indexOf(currentStage!);
+  const currentIndex = studentTimeline.indexOf(currentStage!);
 
   // Gather real notification cards for this booking
   const bookingNotifs = notifications.filter(
@@ -126,7 +126,7 @@ export function OrderTracking() {
       <div className="sticky top-0 z-30 bg-neutral-50/95 backdrop-blur border-b border-neutral-100 px-4 pt-12 pb-3">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => navigate("/customer/bookings")}
+            onClick={() => navigate("/student/bookings")}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-card border border-neutral-100 active:scale-95 transition-transform"
             aria-label="Back"
           >
@@ -194,7 +194,7 @@ export function OrderTracking() {
       <div className="px-5 pt-6">
         <h2 className="font-display text-lg font-bold text-neutral-900">Order Status</h2>
         <div className="mt-4 space-y-1">
-          {customerTimeline.map((stage, i) => {
+          {studentTimeline.map((stage, i) => {
             const done = i < currentIndex;
             const active = i === currentIndex;
             const pending = i > currentIndex;
@@ -219,7 +219,7 @@ export function OrderTracking() {
                       <span className="h-2 w-2 rounded-full bg-neutral-400" />
                     )}
                   </div>
-                  {i < customerTimeline.length - 1 && (
+                  {i < studentTimeline.length - 1 && (
                     <div
                       className={clsx(
                         "w-0.5 flex-1 min-h-[2.5rem] rounded-full transition-all",
@@ -283,7 +283,7 @@ export function OrderTracking() {
   );
 }
 
-function activeLabel(stage: CustomerStage, isReady: boolean): string {
+function activeLabel(stage: StudentStage, isReady: boolean): string {
   switch (stage) {
     case "Booking Confirmed":
       return "Your booking has been confirmed.";

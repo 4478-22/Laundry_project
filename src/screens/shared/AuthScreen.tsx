@@ -4,7 +4,7 @@ import { Phone, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 
 // Simple auth screen. Toggles between Login and Create Account.
-// Field set adapts slightly: partner uses business phone; customer uses phone + email.
+// Field set adapts slightly: partner uses business phone; student uses phone + email.
 // Auth is simulated — any submit logs in.
 interface AuthScreenProps {
   onAuthed: () => void;
@@ -24,7 +24,7 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
   const [pw, setPw] = useState("");
 
   const submit = () => {
-    setMode(isPartner ? "partner" : "customer");
+    setMode(isPartner ? "partner" : "student");
     login();
     onAuthed();
   };

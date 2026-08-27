@@ -5,7 +5,7 @@ import type {
   WalletTransaction,
 } from "../models";
 
-// Dummy orders used by both the customer tracking screen and the
+// Dummy orders used by both the student tracking screen and the
 // partner dashboard / incoming orders / order management screens.
 const services = [
   {
@@ -51,7 +51,7 @@ const laundryNames = [
   "City Spin",
 ];
 
-const customerNames = [
+const studentNames = [
   "Daniel",
   "Ama Serwaa",
   "Kwame Mensah",
@@ -67,7 +67,7 @@ const initialBookings: Booking[] = [
     id: "ORD10234",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    customerName: "Daniel",
+    studentName: "Daniel",
     service: services[0],
     quantity: 5,
     pickupOption: "Laundry pickup",
@@ -84,10 +84,10 @@ const initialBookings: Booking[] = [
     id: "ORD10235",
     laundryId: "l-freshwash",
     laundryName: "FreshWash Laundry",
-    customerName: "Daniel",
+    studentName: "Daniel",
     service: services[2],
     quantity: 8,
-    pickupOption: "Customer drops off",
+    pickupOption: "Student drops off",
     scheduledFor: "Today 2PM",
     total: 40,
     status: "Ready",
@@ -101,7 +101,7 @@ const initialBookings: Booking[] = [
     id: "ORD10220",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    customerName: "Daniel",
+    studentName: "Daniel",
     service: services[1],
     quantity: 3,
     pickupOption: "Laundry pickup",
@@ -126,10 +126,10 @@ const generatedBookings: Booking[] = Array.from({ length: 47 }, (_, index) => {
     id: `ORD${10000 + index + 1}`,
     laundryId: `l-${["cleanpro", "freshwash", "legonwash", "adentafresh"][index % 4]}`,
     laundryName: laundryNames[index % laundryNames.length],
-    customerName: customerNames[index % customerNames.length],
+    studentName: studentNames[index % studentNames.length],
     service,
     quantity,
-    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Customer drops off",
+    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Student drops off",
     scheduledFor: index % 2 === 0 ? `Tomorrow ${8 + (index % 5) * 2}AM` : `Today ${2 + (index % 4) * 2}PM`,
     total,
     status: ["Booking Confirmed", "Laundry Accepted", "Pickup Scheduled", "Washing", "Ready", "Completed"][index % 6] as Booking["status"],
@@ -149,7 +149,7 @@ const initialIncomingOrders: Booking[] = [
     id: "ORD10240",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    customerName: "Daniel",
+    studentName: "Daniel",
     service: services[0],
     quantity: 5,
     pickupOption: "Laundry pickup",
@@ -166,10 +166,10 @@ const initialIncomingOrders: Booking[] = [
     id: "ORD10241",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    customerName: "Ama Serwaa",
+    studentName: "Ama Serwaa",
     service: services[1],
     quantity: 4,
-    pickupOption: "Customer drops off",
+    pickupOption: "Student drops off",
     scheduledFor: "Today 4PM",
     total: 140,
     status: "Booking Confirmed",
@@ -183,7 +183,7 @@ const initialIncomingOrders: Booking[] = [
     id: "ORD10242",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    customerName: "Kwame Mensah",
+    studentName: "Kwame Mensah",
     service: services[2],
     quantity: 10,
     pickupOption: "Laundry pickup",
@@ -208,10 +208,10 @@ const generatedIncomingOrders: Booking[] = Array.from({ length: 6 }, (_, index) 
     id: `ORD${10400 + index}`,
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    customerName: customerNames[(index + 3) % customerNames.length],
+    studentName: studentNames[(index + 3) % studentNames.length],
     service,
     quantity,
-    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Customer drops off",
+    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Student drops off",
     scheduledFor: index % 2 === 0 ? `Tomorrow ${10 + index}AM` : `Today ${4 + index}PM`,
     total,
     status: "Booking Confirmed" as Booking["status"],
@@ -235,8 +235,8 @@ export const orderTimeline: OrderStatus[] = [
   "Completed",
 ];
 
-// The three stages shown to customers on the tracking screen.
-export const customerTimeline = [
+// The three stages shown to students on the tracking screen.
+export const studentTimeline = [
   "Booking Confirmed",
   "Pickup Scheduled",
   "Ready",
@@ -265,7 +265,7 @@ const notificationTemplates = [
   },
   {
     title: "New booking",
-    body: "A customer just placed a pickup request for your express service.",
+    body: "A student just placed a pickup request for your express service.",
     tone: "accent" as const,
   },
   {
@@ -283,7 +283,7 @@ const notificationTemplates = [
 export const dummyNotifications: NotificationItem[] = Array.from({ length: 100 }, (_, index) => {
   const template = notificationTemplates[index % notificationTemplates.length];
   const group = index < 25 ? "Today" : index < 60 ? "Yesterday" : "Earlier";
-  const forMode = index % 2 === 0 ? "customer" : "partner";
+  const forMode = index % 2 === 0 ? "student" : "partner";
   const time = index < 25 ? `${index + 1} min ago` : index < 60 ? `${index - 24}h ago` : `${index - 59}d ago`;
 
   return {

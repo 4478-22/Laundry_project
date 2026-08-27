@@ -10,7 +10,7 @@ import { PartnerAnalytics } from "./PartnerAnalytics";
 import { BusinessSettings } from "../shared/BusinessSettings";
 import { useAppStore } from "../../store/appStore";
 
-// Partner app shell — mirrors CustomerApp structure with partner routes.
+// Partner app shell — mirrors StudentApp structure with partner routes.
 export function PartnerApp() {
   const navigate = useNavigate();
   const location = useLocation();

@@ -5,11 +5,11 @@ import { EmptyState } from "../../components/common/EmptyState";
 import { SkeletonList } from "../../components/common/LoadingSkeleton";
 
 interface StudentNotificationsProps {
-  mode?: "customer" | "partner";
+  mode?: "student" | "partner";
 }
 
-// Customer notifications tab — feed of status update cards.
-export function StudentNotifications({ mode = "customer" }: StudentNotificationsProps) {
+// Student notifications tab — feed of status update cards.
+export function StudentNotifications({ mode = "student" }: StudentNotificationsProps) {
   const notifications = useAppStore((s) => s.notifications);
   const markAllNotificationsRead = useAppStore((s) => s.markAllNotificationsRead);
   const deleteNotification = useAppStore((s) => s.deleteNotification);

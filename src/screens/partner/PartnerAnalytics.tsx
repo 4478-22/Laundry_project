@@ -1,4 +1,4 @@
-import { ArrowLeft, BarChart3, TrendingUp } from "lucide-react";
+import { ArrowLeft, ChartBar as BarChart3, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function PartnerAnalytics() {
@@ -26,14 +26,14 @@ export function PartnerAnalytics() {
           <MetricCard label="Revenue" value="₵2.4k" tone="primary" />
           <MetricCard label="Bookings" value="84" tone="secondary" />
           <MetricCard label="Services sold" value="152" tone="accent" />
-          <MetricCard label="Repeat customers" value="38%" tone="warning" />
+          <MetricCard label="Repeat students" value="38%" tone="warning" />
         </div>
 
         <div className="card p-4">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-display text-lg font-bold text-neutral-900">Revenue</p>
-              <p className="text-sm text-neutral-500">Weekly trend and customer demand.</p>
+              <p className="text-sm text-neutral-500">Weekly trend and student demand.</p>
             </div>
             <div className="flex items-center gap-2 rounded-full bg-secondary-50 px-2.5 py-1 text-sm font-semibold text-secondary-700">
               <TrendingUp className="h-4 w-4" /> +18%

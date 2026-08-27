@@ -140,7 +140,7 @@ export function LaundryDetails() {
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         {isAcceptingOrders ? (
           <button
-            onClick={() => navigate(`/customer/book/${laundry.id}`)}
+            onClick={() => navigate(`/student/book/${laundry.id}`)}
             className="btn-primary w-full"
           >
             Book Service

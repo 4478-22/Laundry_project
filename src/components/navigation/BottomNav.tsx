@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import { Hop as Home, CalendarClock, Bell, User, LayoutDashboard, Package, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
-// Bottom navigation bar. Two configs — customer and partner — matching the
+// Bottom navigation bar. Two configs — student and partner — matching the
 // requested tab sets. Constrained to the phone-frame width so it never
 // stretches across the full desktop viewport.
 
@@ -12,7 +12,7 @@ export interface NavTab {
   icon: ReactNode;
 }
 
-const customerTabs: NavTab[] = [
+const studentTabs: NavTab[] = [
   { key: "home", label: "Home", icon: <Home className="h-5 w-5" /> },
   { key: "bookings", label: "Bookings", icon: <CalendarClock className="h-5 w-5" /> },
   { key: "notifications", label: "Alerts", icon: <Bell className="h-5 w-5" /> },
@@ -27,14 +27,14 @@ const partnerTabs: NavTab[] = [
 ];
 
 interface BottomNavProps {
-  mode: "customer" | "partner";
+  mode: "student" | "partner";
   active: string;
   onChange: (key: string) => void;
   unreadCount?: number;
 }
 
 export function BottomNav({ mode, active, onChange, unreadCount = 0 }: BottomNavProps) {
-  const tabs = mode === "customer" ? customerTabs : partnerTabs;
+  const tabs = mode === "student" ? studentTabs : partnerTabs;
   return (
     <nav className="pointer-events-none fixed bottom-0 left-0 right-0 z-30 flex justify-center pb-[max(0.375rem,env(safe-area-inset-bottom))]">
       <div className="pointer-events-auto mx-auto w-full max-w-[440px] border-t border-neutral-100 bg-white/95 backdrop-blur-md px-3 py-2 shadow-[0_-2px_12px_rgba(0,0,0,0.04)]">

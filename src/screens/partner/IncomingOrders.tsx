@@ -32,7 +32,7 @@ export function IncomingOrders() {
               <div className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-display font-bold text-neutral-900">{o.customerName}</p>
+                    <p className="font-display font-bold text-neutral-900">{o.studentName}</p>
                     <p className="text-sm text-neutral-500">Booking #{o.id}</p>
                   </div>
                   <span className="font-display text-lg font-extrabold text-primary-700">₵{o.total}</span>
@@ -99,7 +99,7 @@ function AcceptedOrdersSection() {
             className="card w-full p-4 text-left flex items-center justify-between active:scale-[0.99] transition-transform"
           >
             <div>
-              <p className="font-semibold text-neutral-900">{o.customerName} · #{o.id}</p>
+              <p className="font-semibold text-neutral-900">{o.studentName} · #{o.id}</p>
               <p className="text-sm text-neutral-500">{o.service.name} · ₵{o.total}</p>
             </div>
             <div className="flex items-center gap-2">

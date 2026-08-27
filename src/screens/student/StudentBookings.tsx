@@ -10,7 +10,7 @@ import type { Booking } from "../../models";
 
 type FilterTab = "all" | "active" | "ready" | "completed";
 
-// Customer bookings tab — list of the customer's orders, grouped by active/past.
+// Student bookings tab — list of the student's orders, grouped by active/past.
 export function StudentBookings() {
   const navigate = useNavigate();
   const bookings = useAppStore((s) => s.bookings);
@@ -125,7 +125,7 @@ export function StudentBookings() {
               <h2 className="mb-3 font-display text-sm font-bold text-neutral-700">Active</h2>
               <div className="space-y-3">
                 {active.map((b) => (
-                  <BookingRow key={b.id} booking={b} onClick={() => navigate(`/customer/track/${b.id}`)} />
+                  <BookingRow key={b.id} booking={b} onClick={() => navigate(`/student/track/${b.id}`)} />
                 ))}
               </div>
             </div>
@@ -136,7 +136,7 @@ export function StudentBookings() {
               <h2 className="mb-3 font-display text-sm font-bold text-neutral-700">Past orders</h2>
               <div className="space-y-3">
                 {past.map((b) => (
-                  <BookingRow key={b.id} booking={b} onClick={() => navigate(`/customer/track/${b.id}`)} />
+                  <BookingRow key={b.id} booking={b} onClick={() => navigate(`/student/track/${b.id}`)} />
                 ))}
               </div>
             </div>
@@ -145,14 +145,14 @@ export function StudentBookings() {
       ) : (
         <div className="mt-4 px-5 space-y-3">
           {filtered.map((b) => (
-            <BookingRow key={b.id} booking={b} onClick={() => navigate(`/customer/track/${b.id}`)} />
+            <BookingRow key={b.id} booking={b} onClick={() => navigate(`/student/track/${b.id}`)} />
           ))}
         </div>
       )}
 
       {bookings.length === 0 && (
         <div className="px-5">
-          <EmptyState icon={<Package className="h-6 w-6" />} title="No bookings yet" description="Browse nearby laundries and book your first service." actionLabel="Find Laundries" onAction={() => navigate("/customer")} />
+          <EmptyState icon={<Package className="h-6 w-6" />} title="No bookings yet" description="Browse nearby laundries and book your first service." actionLabel="Find Laundries" onAction={() => navigate("/student")} />
         </div>
       )}
 

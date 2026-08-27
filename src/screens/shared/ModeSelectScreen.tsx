@@ -1,13 +1,13 @@
 import { User, Store } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 
-// Mode selection — choose Customer or Laundry Partner before authenticating.
+// Mode selection — choose Student or Laundry Partner before authenticating.
 interface ModeSelectScreenProps {
-  onSelectCustomer: () => void;
+  onSelectStudent: () => void;
   onSelectPartner: () => void;
 }
 
-export function ModeSelectScreen({ onSelectCustomer, onSelectPartner }: ModeSelectScreenProps) {
+export function ModeSelectScreen({ onSelectStudent, onSelectPartner }: ModeSelectScreenProps) {
   const setMode = useAppStore((s) => s.setMode);
 
   return (
@@ -30,8 +30,8 @@ export function ModeSelectScreen({ onSelectCustomer, onSelectPartner }: ModeSele
       <div className="mt-8 space-y-4">
         <button
           onClick={() => {
-            setMode("customer");
-            onSelectCustomer();
+            setMode("student");
+            onSelectStudent();
           }}
           className="card w-full p-5 text-left transition-all hover:shadow-card-hover active:scale-[0.99]"
         >
@@ -40,7 +40,7 @@ export function ModeSelectScreen({ onSelectCustomer, onSelectPartner }: ModeSele
               <User className="h-7 w-7" />
             </div>
             <div className="flex-1">
-              <h3 className="font-display text-lg font-bold text-neutral-900">I'm a Customer</h3>
+              <h3 className="font-display text-lg font-bold text-neutral-900">I'm a Student</h3>
               <p className="text-sm text-neutral-500">Find laundries, book & track orders.</p>
             </div>
             <Chevron />

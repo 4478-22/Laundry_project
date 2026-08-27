@@ -8,7 +8,7 @@ export type ServiceLocation =
   | "Legon"
   | "Adenta";
 
-export type PickupOption = "Customer drops off" | "Laundry pickup";
+export type PickupOption = "Student drops off" | "Laundry pickup";
 
 export type OrderStatus =
   | "Booking Confirmed"
@@ -18,11 +18,11 @@ export type OrderStatus =
   | "Ready"
   | "Completed";
 
-/** The three stages the customer sees on the tracking screen. */
-export type CustomerStage = "Booking Confirmed" | "Pickup Scheduled" | "Ready";
+/** The three stages the student sees on the tracking screen. */
+export type StudentStage = "Booking Confirmed" | "Pickup Scheduled" | "Ready";
 
-/** Maps any internal OrderStatus to the customer-facing stage it belongs to. */
-export function toCustomerStage(status: OrderStatus): CustomerStage {
+/** Maps any internal OrderStatus to the student-facing stage it belongs to. */
+export function toStudentStage(status: OrderStatus): StudentStage {
   switch (status) {
     case "Booking Confirmed":
     case "Laundry Accepted":
@@ -86,7 +86,7 @@ export interface Booking {
   id: string;
   laundryId: string;
   laundryName: string;
-  customerName: string;
+  studentName: string;
   service: Service;
   quantity: number;
   pickupOption: PickupOption;
@@ -108,7 +108,7 @@ export interface Booking {
   completedAt?: string;
 }
 
-export interface CustomerUser {
+export interface StudentUser {
   id: string;
   name: string;
   phone: string;
@@ -185,4 +185,4 @@ export interface PartnerWalletState {
   transactions: WalletTransaction[];
 }
 
-export type AppMode = "customer" | "partner";
+export type AppMode = "student" | "partner";

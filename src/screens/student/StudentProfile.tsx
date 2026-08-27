@@ -5,14 +5,14 @@ import { useAppStore } from "../../store/appStore";
 import { dummyLaundries } from "../../data";
 import { SkeletonProfile } from "../../components/common/LoadingSkeleton";
 
-// Customer profile tab — personal info, stats, saved laundries, rewards, menu.
+// Student profile tab — personal info, stats, saved laundries, rewards, menu.
 export function StudentProfile() {
   const navigate = useNavigate();
-  const customer = useAppStore((s) => s.customer);
+  const student = useAppStore((s) => s.student);
   const bookings = useAppStore((s) => s.bookings);
   const savedIds = useAppStore((s) => s.savedLaundryIds);
   const logout = useAppStore((s) => s.logout);
-  const expireCustomerPoints = useAppStore((s) => s.expireCustomerPoints);
+  const expireStudentPoints = useAppStore((s) => s.expireStudentPoints);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,17 +24,17 @@ export function StudentProfile() {
   const completedOrders = bookings.filter((b) => b.status === "Completed").length;
 
   useEffect(() => {
-    expireCustomerPoints();
-  }, [expireCustomerPoints]);
+    expireStudentPoints();
+  }, [expireStudentPoints]);
 
   const rewardExpiryWindow = 90;
-  const lastCompletedAt = customer.lastCompletedBookingAt ? new Date(customer.lastCompletedBookingAt) : null;
+  const lastCompletedAt = student.lastCompletedBookingAt ? new Date(student.lastCompletedBookingAt) : null;
   const daysSinceLastCompleted = lastCompletedAt
     ? Math.floor((Date.now() - lastCompletedAt.getTime()) / (1000 * 60 * 60 * 24))
     : 0;
   const isExpired = lastCompletedAt ? daysSinceLastCompleted >= rewardExpiryWindow : false;
   const daysUntilExpiry = lastCompletedAt ? Math.max(0, rewardExpiryWindow - daysSinceLastCompleted) : null;
-  const displayPoints = isExpired ? 0 : customer.rewardsPoints;
+  const displayPoints = isExpired ? 0 : student.rewardsPoints;
   const rewardsStatusMessage = isExpired
     ? "Your Laundry Points expired because your account was inactive for 90 days."
     : lastCompletedAt
@@ -50,10 +50,10 @@ export function StudentProfile() {
     <div className="pb-6">
       <div className="rounded-b-4xl bg-gradient-to-b from-primary-600 to-primary-700 px-5 pb-8 pt-12 text-white">
         <div className="flex items-center gap-4">
-          <img src={customer.avatarUrl} alt={customer.name} className="h-16 w-16 rounded-2xl object-cover ring-2 ring-white/30" />
+          <img src={student.avatarUrl} alt={student.name} className="h-16 w-16 rounded-2xl object-cover ring-2 ring-white/30" />
           <div>
-            <h1 className="font-display text-xl font-extrabold">{customer.name}</h1>
-            <p className="text-sm text-primary-100">{customer.email}</p>
+            <h1 className="font-display text-xl font-extrabold">{student.name}</h1>
+            <p className="text-sm text-primary-100">{student.email}</p>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ export function StudentProfile() {
           <div className="grid grid-cols-2 gap-3 p-4">
             <div className="rounded-2xl bg-neutral-50 p-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Referral code</p>
-              <p className="mt-1 font-display text-lg font-bold text-neutral-900">LAUNDRY{customer.rewardsPoints}</p>
+              <p className="mt-1 font-display text-lg font-bold text-neutral-900">LAUNDRY{student.rewardsPoints}</p>
             </div>
             <div className="rounded-2xl bg-neutral-50 p-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-neutral-400">Completed orders</p>
@@ -92,8 +92,8 @@ export function StudentProfile() {
       <div className="mt-6 px-5">
         <h2 className="mb-3 font-display text-sm font-bold text-neutral-700">Personal Information</h2>
         <div className="card divide-y divide-neutral-100">
-          <InfoRow icon={<Phone className="h-4 w-4" />} label="Phone" value={customer.phone} />
-          <InfoRow icon={<Mail className="h-4 w-4" />} label="Email" value={customer.email} />
+          <InfoRow icon={<Phone className="h-4 w-4" />} label="Phone" value={student.phone} />
+          <InfoRow icon={<Mail className="h-4 w-4" />} label="Email" value={student.email} />
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export function StudentProfile() {
         {savedLaundries.length > 0 ? (
           <div className="space-y-3">
             {savedLaundries.map((l) => (
-              <button key={l.id} onClick={() => navigate(`/customer/laundry/${l.id}`)} className="card flex w-full items-center gap-3 p-3 text-left transition-transform active:scale-[0.99]">
+              <button key={l.id} onClick={() => navigate(`/student/laundry/${l.id}`)} className="card flex w-full items-center gap-3 p-3 text-left transition-transform active:scale-[0.99]">
                 <img src={l.imageUrl} alt={l.name} className="h-14 w-14 rounded-xl object-cover" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold text-neutral-900">{l.name}</p>
@@ -122,8 +122,8 @@ export function StudentProfile() {
 
       <div className="mt-6 px-5">
         <div className="card divide-y divide-neutral-100">
-          <MenuRow onClick={() => navigate("/customer/settings")} icon={<Settings className="h-4 w-4" />} label="Settings" />
-          <MenuRow onClick={() => navigate("/customer/help")} icon={<HelpCircle className="h-4 w-4" />} label="Help & Support" />
+          <MenuRow onClick={() => navigate("/student/settings")} icon={<Settings className="h-4 w-4" />} label="Settings" />
+          <MenuRow onClick={() => navigate("/student/help")} icon={<HelpCircle className="h-4 w-4" />} label="Help & Support" />
           <button onClick={() => { logout(); navigate("/"); }} className="flex w-full items-center gap-3 p-4 text-left transition-colors active:bg-error-50">
             <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-error-50 text-error-600"><LogOut className="h-4 w-4" /></span>
             <span className="font-semibold text-error-600">Log out</span>

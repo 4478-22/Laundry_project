@@ -4,7 +4,7 @@ import type { Laundry } from "../../models";
 import { RatingStars } from "../common/RatingStars";
 import { useAppStore } from "../../store/appStore";
 
-// The marketplace laundry card shown on the customer home screen.
+// The marketplace laundry card shown on the student home screen.
 // Mirrors an Airbnb-style listing card.
 
 interface LaundryCardProps {
