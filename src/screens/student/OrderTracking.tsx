@@ -37,21 +37,30 @@ export function OrderTracking() {
       : Date.now();
     const endTime = booking.readyAt ? new Date(booking.readyAt).getTime() : null;
 
-    // If already ready, show the final elapsed time (no ticking)
-    if (isReady && endTime) {
-      setElapsed(Math.max(0, Math.floor((endTime - startTime) / 1000)));
-      if (intervalRef.current) clearInterval(intervalRef.current);
+    // If already ready, freeze the timer — no ticking
+    if (isReady) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      if (endTime) {
+        setElapsed(Math.max(0, Math.floor((endTime - startTime) / 1000)));
+      }
       return;
     }
 
     // Otherwise tick every second
+    if (intervalRef.current) clearInterval(intervalRef.current);
     setElapsed(Math.max(0, Math.floor((Date.now() - startTime) / 1000)));
     intervalRef.current = setInterval(() => {
       setElapsed(Math.max(0, Math.floor((Date.now() - startTime) / 1000)));
     }, 1000);
 
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
   }, [booking?.bookingCreatedAt, booking?.readyAt, isReady]);
 
