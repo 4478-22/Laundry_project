@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { Package, Clock, CircleCheck as CheckCircle2, DollarSign, Star, ChevronRight, ArrowUpRight } from "lucide-react";
+import { Package, Clock, CircleCheck as CheckCircle2, DollarSign, Star, ChevronRight, ArrowUpRight, Store } from "lucide-react";
 import { StatCard } from "../../components/common/SectionHeader";
 import { useAppStore } from "../../store/appStore";
 import { StatusBadge } from "../../components/common/StatusBadge";
+import { clsx } from "clsx";
 
 // Partner dashboard — business overview with stats, revenue, recent orders.
 export function PartnerDashboard() {
   const navigate = useNavigate();
   const bookings = useAppStore((s) => s.bookings);
   const incoming = useAppStore((s) => s.incomingOrders);
+  const isAcceptingOrders = useAppStore((s) => s.isAcceptingOrders);
+  const setAcceptingOrders = useAppStore((s) => s.setAcceptingOrders);
 
   const pending = incoming.length + bookings.filter((b) => b.status !== "Completed" && b.status !== "Booking Confirmed").length;
 
@@ -29,6 +32,47 @@ export function PartnerDashboard() {
           <div className="flex items-center gap-1 rounded-full bg-white/15 backdrop-blur px-3 py-1.5">
             <Star className="h-4 w-4 fill-accent-400 text-accent-400" />
             <span className="font-bold">4.8</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Accepting Orders toggle */}
+      <div className="px-5 mt-5">
+        <div className="card p-5">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className={clsx(
+                "flex h-11 w-11 items-center justify-center rounded-2xl transition-colors",
+                isAcceptingOrders ? "bg-secondary-50 text-secondary-600" : "bg-neutral-100 text-neutral-400",
+              )}>
+                <Store className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="font-display font-bold text-neutral-900">Accepting Orders</p>
+                <p className="text-sm text-neutral-500 mt-0.5">
+                  {isAcceptingOrders
+                    ? "Customers can currently place bookings."
+                    : "Your business is currently not accepting new bookings."}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setAcceptingOrders(!isAcceptingOrders)}
+              role="switch"
+              aria-checked={isAcceptingOrders}
+              aria-label="Toggle accepting orders"
+              className={clsx(
+                "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200",
+                isAcceptingOrders ? "bg-secondary-500" : "bg-neutral-300",
+              )}
+            >
+              <span
+                className={clsx(
+                  "absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200",
+                  isAcceptingOrders ? "translate-x-6" : "translate-x-1",
+                )}
+              />
+            </button>
           </div>
         </div>
       </div>

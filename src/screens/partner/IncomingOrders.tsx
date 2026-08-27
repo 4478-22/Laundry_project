@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { Check, X, Clock, Truck, Store, ChevronRight } from "lucide-react";
+import { Check, Clock, Truck, Store, ChevronRight } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 import { StatusBadge } from "../../components/common/StatusBadge";
 
-// Incoming orders tab — new bookings awaiting accept/reject.
+// Incoming orders tab — new bookings awaiting acceptance.
 export function IncomingOrders() {
   const navigate = useNavigate();
   const incoming = useAppStore((s) => s.incomingOrders);
   const acceptOrder = useAppStore((s) => s.acceptOrder);
-  const rejectOrder = useAppStore((s) => s.rejectOrder);
 
   return (
     <div className="pb-6">
@@ -50,24 +49,16 @@ export function IncomingOrders() {
                   <StatusBadge status={o.status} />
                 </div>
 
-                {/* Accept / Reject */}
-                <div className="flex gap-3 pt-1">
-                  <button
-                    onClick={() => rejectOrder(o.id)}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-error-200 bg-error-50 py-3 font-semibold text-error-600 active:scale-95 transition-transform"
-                  >
-                    <X className="h-5 w-5" /> Reject
-                  </button>
-                  <button
-                    onClick={() => {
-                      acceptOrder(o.id);
-                      navigate(`/partner/manage/${o.id}`);
-                    }}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-secondary-600 py-3 font-semibold text-white active:scale-95 transition-transform hover:bg-secondary-700"
-                  >
-                    <Check className="h-5 w-5" /> Accept
-                  </button>
-                </div>
+                {/* Accept */}
+                <button
+                  onClick={() => {
+                    acceptOrder(o.id);
+                    navigate(`/partner/manage/${o.id}`);
+                  }}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-secondary-600 py-3 font-semibold text-white active:scale-95 transition-transform hover:bg-secondary-700"
+                >
+                  <Check className="h-5 w-5" /> Accept
+                </button>
               </div>
             </div>
           ))}

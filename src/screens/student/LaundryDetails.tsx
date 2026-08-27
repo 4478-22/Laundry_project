@@ -11,6 +11,7 @@ export function LaundryDetails() {
   const navigate = useNavigate();
   const laundry = dummyLaundries.find((l) => l.id === id);
   const savedIds = useAppStore((s) => s.savedLaundryIds);
+  const isAcceptingOrders = useAppStore((s) => s.isAcceptingOrders);
 
   if (!laundry) {
     return (
@@ -121,12 +122,21 @@ export function LaundryDetails() {
 
       {/* Sticky CTA */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[440px] bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <button
-          onClick={() => navigate(`/customer/book/${laundry.id}`)}
-          className="btn-primary w-full"
-        >
-          Book Service
-        </button>
+        {isAcceptingOrders ? (
+          <button
+            onClick={() => navigate(`/customer/book/${laundry.id}`)}
+            className="btn-primary w-full"
+          >
+            Book Service
+          </button>
+        ) : (
+          <button
+            disabled
+            className="w-full rounded-2xl bg-neutral-200 py-3.5 font-semibold text-neutral-500 cursor-not-allowed"
+          >
+            Currently Not Accepting Orders
+          </button>
+        )}
       </div>
     </div>
   );

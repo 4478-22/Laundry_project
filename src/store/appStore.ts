@@ -25,6 +25,7 @@ import {
 interface AppState {
   mode: AppMode;
   isAuthed: boolean;
+  isAcceptingOrders: boolean;
   customer: CustomerUser;
   bookings: Booking[];
   incomingOrders: Booking[];
@@ -39,7 +40,7 @@ interface AppState {
   addBooking: (booking: Booking) => void;
   updateOrderStatus: (id: string, status: OrderStatus) => void;
   acceptOrder: (id: string) => void;
-  rejectOrder: (id: string) => void;
+  setAcceptingOrders: (accepting: boolean) => void;
   toggleSaved: (laundryId: string) => void;
   markAllNotificationsRead: () => void;
   deleteNotification: (id: string) => void;
@@ -130,6 +131,7 @@ const defaultWallet: PartnerWalletState = {
 export const useAppStore = create<AppState>((set) => ({
   mode: "customer",
   isAuthed: false,
+  isAcceptingOrders: true,
   customer: defaultCustomer,
   bookings: dummyOrders,
   incomingOrders: dummyIncomingOrders,
@@ -197,10 +199,7 @@ export const useAppStore = create<AppState>((set) => ({
         b.id === id ? { ...b, status: "Laundry Accepted" as OrderStatus } : b,
       ),
     })),
-  rejectOrder: (id) =>
-    set((s) => ({
-      incomingOrders: s.incomingOrders.filter((b) => b.id !== id),
-    })),
+  setAcceptingOrders: (accepting) => set({ isAcceptingOrders: accepting }),
   toggleSaved: (laundryId) =>
     set((s) => ({
       savedLaundryIds: s.savedLaundryIds.includes(laundryId)
