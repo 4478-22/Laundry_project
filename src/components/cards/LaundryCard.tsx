@@ -2,6 +2,7 @@ import { Star, BadgeCheck, MapPin, Clock } from "lucide-react";
 import { clsx } from "clsx";
 import type { Laundry } from "../../models";
 import { RatingStars } from "../common/RatingStars";
+import { useAppStore } from "../../store/appStore";
 
 // The marketplace laundry card shown on the customer home screen.
 // Mirrors an Airbnb-style listing card.
@@ -12,6 +13,8 @@ interface LaundryCardProps {
 }
 
 export function LaundryCard({ laundry, onViewDetails }: LaundryCardProps) {
+  const isAcceptingOrders = useAppStore((s) => s.isAcceptingOrders);
+
   return (
     <button
       onClick={onViewDetails}
@@ -34,6 +37,13 @@ export function LaundryCard({ laundry, onViewDetails }: LaundryCardProps) {
           <Clock className="h-3.5 w-3.5" />
           {laundry.estimatedCompletion}
         </span>
+        {!isAcceptingOrders && (
+          <div className="absolute inset-0 flex items-center justify-center bg-neutral-900/40">
+            <span className="rounded-full bg-neutral-900/80 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
+              Unavailable
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="p-4 space-y-3">

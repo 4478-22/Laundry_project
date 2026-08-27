@@ -56,6 +56,22 @@ export function LaundryDetails() {
               <MapPin className="h-4 w-4 shrink-0" />
               <span className="truncate">{laundry.address}</span>
             </div>
+            <div className="mt-2">
+              <span
+                className={clsx(
+                  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
+                  isAcceptingOrders
+                    ? "bg-secondary-50 text-secondary-700"
+                    : "bg-neutral-100 text-neutral-500",
+                )}
+              >
+                <span className={clsx(
+                  "h-1.5 w-1.5 rounded-full",
+                  isAcceptingOrders ? "bg-secondary-500" : "bg-neutral-400",
+                )} />
+                {isAcceptingOrders ? "Available" : "Unavailable"}
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-1 rounded-xl bg-secondary-50 px-2.5 py-1.5">
             <Star className="h-4 w-4 fill-secondary-500 text-secondary-500" />

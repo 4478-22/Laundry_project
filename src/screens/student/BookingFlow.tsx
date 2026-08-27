@@ -13,6 +13,7 @@ export function BookingFlow() {
   const navigate = useNavigate();
   const laundry = dummyLaundries.find((l) => l.id === laundryId);
   const addBooking = useAppStore((s) => s.addBooking);
+  const isAcceptingOrders = useAppStore((s) => s.isAcceptingOrders);
 
   const [step, setStep] = useState(0);
   const [service, setService] = useState<Service | null>(null);
@@ -33,6 +34,7 @@ export function BookingFlow() {
 
   const confirm = () => {
     if (!service) return;
+    if (!isAcceptingOrders) return;
     const id = `ORD${Math.floor(10000 + Math.random() * 89999)}`;
     const platformCommission = Math.round(total * 0.1);
     const booking: Booking = {
@@ -60,6 +62,13 @@ export function BookingFlow() {
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50">
+      {!isAcceptingOrders && (
+        <div className="bg-warning-50 px-5 py-3 text-center">
+          <p className="text-sm font-semibold text-warning-700">
+            This laundry is currently not accepting new bookings.
+          </p>
+        </div>
+      )}
       {/* Header with stepper */}
       <div className="sticky top-0 z-30 bg-neutral-50/95 backdrop-blur border-b border-neutral-100 px-4 pt-12 pb-3">
         <div className="flex items-center gap-3">
@@ -256,10 +265,10 @@ export function BookingFlow() {
           </div>
           <button
             onClick={confirm}
-            disabled={step < 3}
+            disabled={step < 3 || !isAcceptingOrders}
             className="btn-primary w-full disabled:opacity-40"
           >
-            Confirm Booking
+            {isAcceptingOrders ? "Confirm Booking" : "Not Accepting Orders"}
           </button>
         </div>
       )}
