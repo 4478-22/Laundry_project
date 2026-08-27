@@ -3,6 +3,7 @@ import { Bell, CircleCheck as CheckCircle2, Droplets, MessageCircleMore, Sparkle
 import { useAppStore } from "../../store/appStore";
 import { EmptyState } from "../../components/common/EmptyState";
 import { SkeletonList } from "../../components/common/LoadingSkeleton";
+import { ConfirmDialog } from "../../components/common/ConfirmDialog";
 
 interface StudentNotificationsProps {
   mode?: "student" | "partner";
@@ -14,6 +15,7 @@ export function StudentNotifications({ mode = "student" }: StudentNotificationsP
   const markAllNotificationsRead = useAppStore((s) => s.markAllNotificationsRead);
   const deleteNotification = useAppStore((s) => s.deleteNotification);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 650);
@@ -86,7 +88,7 @@ export function StudentNotifications({ mode = "student" }: StudentNotificationsP
                         <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${item.unread ? "bg-primary-50 text-primary-700" : "bg-neutral-100 text-neutral-500"}`}>
                           {item.unread ? "Unread" : "Read"}
                         </span>
-                        <button onClick={() => deleteNotification(item.id)} className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-500">
+                        <button onClick={() => setDeleteTarget(item.id)} className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-500">
                           <Trash2 className="h-4 w-4" /> Delete
                         </button>
                       </div>
@@ -98,6 +100,17 @@ export function StudentNotifications({ mode = "student" }: StudentNotificationsP
           })}
         </div>
       )}
+        <ConfirmDialog
+          open={deleteTarget !== null}
+          title="Delete notification?"
+          message="This notification will be permanently removed from your activity feed. This action cannot be undone."
+          confirmLabel="Delete"
+          onConfirm={() => {
+            if (deleteTarget) deleteNotification(deleteTarget);
+            setDeleteTarget(null);
+          }}
+          onCancel={() => setDeleteTarget(null)}
+        />
     </div>
   );
 }

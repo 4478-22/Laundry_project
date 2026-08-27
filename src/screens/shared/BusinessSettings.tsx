@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../store/appStore";
 import type { BusinessSettings, Service } from "../../models";
 import { SkeletonProfile } from "../../components/common/LoadingSkeleton";
+import { ConfirmDialog } from "../../components/common/ConfirmDialog";
 
 export function BusinessSettings() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export function BusinessSettings() {
   const [draft, setDraft] = useState<BusinessSettings>(settings);
   const [isLoading, setIsLoading] = useState(true);
   const [editingService, setEditingService] = useState<Service | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIsLoading(false), 700);
@@ -177,7 +179,7 @@ export function BusinessSettings() {
                 </div>
                 <div className="mt-3 flex gap-2">
                   <button onClick={() => setEditingService(service)} className="btn-secondary flex-1">Edit</button>
-                  <button onClick={() => deleteBusinessService(service.id)} className="rounded-2xl bg-error-50 p-2.5 text-error-600">
+                  <button onClick={() => setDeleteTarget(service.id)} className="rounded-2xl bg-error-50 p-2.5 text-error-600">
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
@@ -238,6 +240,18 @@ export function BusinessSettings() {
           <button onClick={save} className="btn-primary flex-1">Save Changes</button>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        title="Delete service?"
+        message="This service will be permanently removed. This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={() => {
+          if (deleteTarget) deleteBusinessService(deleteTarget);
+          setDeleteTarget(null);
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

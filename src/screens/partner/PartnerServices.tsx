@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus, Clock, CreditCard as Edit3, Trash2, X } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
+import { ConfirmDialog } from "../../components/common/ConfirmDialog";
 
 const emptyFormState: {
   name: string;
@@ -25,6 +26,7 @@ export function PartnerServices() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formState, setFormState] = useState(emptyFormState);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   const openAddForm = () => {
     setEditingId(null);
@@ -98,6 +100,7 @@ export function PartnerServices() {
 
   const deleteService = (serviceId: string) => {
     deleteBusinessService(serviceId);
+    setDeleteTarget(null);
   };
 
   return (
@@ -154,7 +157,7 @@ export function PartnerServices() {
               </button>
               <button
                 type="button"
-                onClick={() => deleteService(s.id)}
+                onClick={() => setDeleteTarget(s.id)}
                 className="flex items-center justify-center gap-2 rounded-2xl border border-error-200 bg-error-50 px-3 py-2 text-sm font-semibold text-error-700"
               >
                 <Trash2 className="h-4 w-4" /> Delete
@@ -173,6 +176,15 @@ export function PartnerServices() {
           <Plus className="h-5 w-5" /> Add new service
         </button>
       </div>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        title="Delete service?"
+        message="This service will be permanently removed from your offerings. This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={() => deleteTarget && deleteService(deleteTarget)}
+        onCancel={() => setDeleteTarget(null)}
+      />
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 px-4 py-6 sm:items-center">

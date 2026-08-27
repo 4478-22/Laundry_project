@@ -4,6 +4,7 @@ import { useAppStore } from "../../store/appStore";
 import { adminPartners, pendingPartners } from "../../data";
 import type { AdminPartner, PartnerAccountStatus } from "../../models";
 import { clsx } from "clsx";
+import { ConfirmDialog } from "../../components/common/ConfirmDialog";
 
 const statusConfig: Record<PartnerAccountStatus, { bg: string; text: string }> = {
   Active: { bg: "bg-secondary-50", text: "text-secondary-700" },
@@ -18,6 +19,7 @@ export function AdminPartners() {
   const [partners, setPartners] = useState<AdminPartner[]>(adminPartners);
   const [pending, setPending] = useState(pendingPartners);
   const [tab, setTab] = useState<"all" | "pending">("all");
+  const [rejectTarget, setRejectTarget] = useState<string | null>(null);
 
   const filtered = partners.filter(
     (p) =>
@@ -59,6 +61,7 @@ export function AdminPartners() {
 
   const rejectPending = (id: string) => {
     setPending((prev) => prev.filter((p) => p.id !== id));
+    setRejectTarget(null);
   };
 
   return (
@@ -118,7 +121,7 @@ export function AdminPartners() {
                     <CheckCircle2 className="h-4 w-4" /> Approve
                   </button>
                   <button
-                    onClick={() => rejectPending(pp.id)}
+                    onClick={() => setRejectTarget(pp.id)}
                     className="flex items-center gap-1.5 rounded-xl bg-error-50 px-4 py-2 text-sm font-semibold text-error-600 active:scale-95 transition-transform"
                   >
                     <X className="h-4 w-4" /> Reject
@@ -312,6 +315,15 @@ export function AdminPartners() {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        open={rejectTarget !== null}
+        title="Reject partner application?"
+        message="This application will be permanently removed from the pending list. The applicant will need to reapply."
+        confirmLabel="Reject"
+        onConfirm={() => rejectTarget && rejectPending(rejectTarget)}
+        onCancel={() => setRejectTarget(null)}
+      />
     </div>
   );
 }
