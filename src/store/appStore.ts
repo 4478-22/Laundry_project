@@ -3,11 +3,11 @@ import type {
   AppMode,
   Booking,
   BusinessSettings,
+  CustomerUser,
   Laundry,
   NotificationItem,
   OrderStatus,
   PartnerWalletState,
-  StudentUser,
   WalletTransaction,
 } from "../models";
 import {
@@ -25,7 +25,7 @@ import {
 interface AppState {
   mode: AppMode;
   isAuthed: boolean;
-  student: StudentUser;
+  customer: CustomerUser;
   bookings: Booking[];
   incomingOrders: Booking[];
   savedLaundryIds: string[];
@@ -48,17 +48,15 @@ interface AppState {
   updateBusinessService: (service: BusinessSettings["services"][number]) => void;
   deleteBusinessService: (id: string) => void;
   topUpWallet: (amount: number, provider: string) => void;
-  expireStudentPoints: () => void;
+  expireCustomerPoints: () => void;
   getLaundry: (id: string) => Laundry | undefined;
 }
 
-const defaultStudent: StudentUser = {
+const defaultCustomer: CustomerUser = {
   id: "u-daniel",
   name: "Daniel",
   phone: "+233 24 555 0192",
-  email: "daniel@upsa.edu.gh",
-  university: "UPSA",
-  hostel: "On-Campus Hostel A",
+  email: "daniel@example.com",
   avatarUrl: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
   rewardsPoints: 320,
   lastCompletedBookingAt: new Date(Date.now() - 48 * 24 * 60 * 60 * 1000).toISOString(),
@@ -69,9 +67,9 @@ const defaultBusinessSettings: BusinessSettings = {
   ownerName: "Nana Opoku",
   phone: "+233 24 123 4567",
   email: "ops@cleanprolaundry.com",
-  address: "Near UPSA Main Gate, Accra",
+  address: "Near Accra Central, Accra",
   gpsLocation: "5.6727, -0.1808",
-  description: "Trusted laundry partner for students and busy professionals in Accra.",
+  description: "Trusted laundry partner for busy professionals and families in Accra.",
   hours: [
     { day: "Monday", open: "07:00", close: "20:00", closed: false },
     { day: "Tuesday", open: "07:00", close: "20:00", closed: false },
@@ -130,9 +128,9 @@ const defaultWallet: PartnerWalletState = {
 };
 
 export const useAppStore = create<AppState>((set) => ({
-  mode: "student",
+  mode: "customer",
   isAuthed: false,
-  student: defaultStudent,
+  customer: defaultCustomer,
   bookings: dummyOrders,
   incomingOrders: dummyIncomingOrders,
   savedLaundryIds: ["l-cleanpro"],
@@ -188,9 +186,9 @@ export const useAppStore = create<AppState>((set) => ({
       return {
         bookings: s.bookings.map((b) => (b.id === id ? { ...b, status } : b)),
         incomingOrders: s.incomingOrders.map((b) => (b.id === id ? { ...b, status } : b)),
-        student: shouldResetTimer
-          ? { ...s.student, lastCompletedBookingAt: new Date().toISOString() }
-          : s.student,
+        customer: shouldResetTimer
+          ? { ...s.customer, lastCompletedBookingAt: new Date().toISOString() }
+          : s.customer,
       };
     }),
   acceptOrder: (id) =>
@@ -258,17 +256,17 @@ export const useAppStore = create<AppState>((set) => ({
         ],
       },
     })),
-  expireStudentPoints: () =>
+  expireCustomerPoints: () =>
     set((s) => {
-      if (!s.student.lastCompletedBookingAt || s.student.rewardsPoints <= 0) {
+      if (!s.customer.lastCompletedBookingAt || s.customer.rewardsPoints <= 0) {
         return {};
       }
-      const lastCompleted = new Date(s.student.lastCompletedBookingAt);
+      const lastCompleted = new Date(s.customer.lastCompletedBookingAt);
       const expiryThresholdMs = 90 * 24 * 60 * 60 * 1000;
       if (Date.now() - lastCompleted.getTime() >= expiryThresholdMs) {
         return {
-          student: {
-            ...s.student,
+          customer: {
+            ...s.customer,
             rewardsPoints: 0,
           },
         };

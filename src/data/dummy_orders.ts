@@ -5,7 +5,7 @@ import type {
   WalletTransaction,
 } from "../models";
 
-// Dummy orders used by both the student tracking screen and the
+// Dummy orders used by both the customer tracking screen and the
 // partner dashboard / incoming orders / order management screens.
 const services = [
   {
@@ -48,10 +48,10 @@ const laundryNames = [
   "Legon Wash Hub",
   "Adenta Fresh Laundry",
   "Blue Nile Laundry",
-  "Campus Spin",
+  "City Spin",
 ];
 
-const studentNames = [
+const customerNames = [
   "Daniel",
   "Ama Serwaa",
   "Kwame Mensah",
@@ -64,10 +64,10 @@ const studentNames = [
 
 const initialBookings: Booking[] = [
   {
-    id: "UPSA10234",
+    id: "ORD10234",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    studentName: "Daniel",
+    customerName: "Daniel",
     service: services[0],
     quantity: 5,
     pickupOption: "Laundry pickup",
@@ -81,13 +81,13 @@ const initialBookings: Booking[] = [
     commissionStatus: "Collected",
   },
   {
-    id: "UPSA10235",
+    id: "ORD10235",
     laundryId: "l-freshwash",
     laundryName: "FreshWash Laundry",
-    studentName: "Daniel",
+    customerName: "Daniel",
     service: services[2],
     quantity: 8,
-    pickupOption: "Student drops off",
+    pickupOption: "Customer drops off",
     scheduledFor: "Today 2PM",
     total: 40,
     status: "Ready",
@@ -98,10 +98,10 @@ const initialBookings: Booking[] = [
     commissionStatus: "Outstanding",
   },
   {
-    id: "UPSA10220",
+    id: "ORD10220",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    studentName: "Daniel",
+    customerName: "Daniel",
     service: services[1],
     quantity: 3,
     pickupOption: "Laundry pickup",
@@ -123,13 +123,13 @@ const generatedBookings: Booking[] = Array.from({ length: 47 }, (_, index) => {
   const paymentMethod = index % 2 === 0 ? "Pay Online" : "Pay at Laundry";
   const platformCommission = Math.round(total * 0.1);
   return {
-    id: `UPSA${10000 + index + 1}`,
+    id: `ORD${10000 + index + 1}`,
     laundryId: `l-${["cleanpro", "freshwash", "legonwash", "adentafresh"][index % 4]}`,
     laundryName: laundryNames[index % laundryNames.length],
-    studentName: studentNames[index % studentNames.length],
+    customerName: customerNames[index % customerNames.length],
     service,
     quantity,
-    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Student drops off",
+    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Customer drops off",
     scheduledFor: index % 2 === 0 ? `Tomorrow ${8 + (index % 5) * 2}AM` : `Today ${2 + (index % 4) * 2}PM`,
     total,
     status: ["Booking Confirmed", "Laundry Accepted", "Pickup Scheduled", "Washing", "Ready", "Completed"][index % 6] as Booking["status"],
@@ -146,10 +146,10 @@ export const dummyOrders: Booking[] = [...initialBookings, ...generatedBookings]
 // Partner-side incoming orders (new bookings awaiting accept/reject).
 const initialIncomingOrders: Booking[] = [
   {
-    id: "UPSA10240",
+    id: "ORD10240",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    studentName: "Daniel",
+    customerName: "Daniel",
     service: services[0],
     quantity: 5,
     pickupOption: "Laundry pickup",
@@ -163,13 +163,13 @@ const initialIncomingOrders: Booking[] = [
     commissionStatus: "Collected",
   },
   {
-    id: "UPSA10241",
+    id: "ORD10241",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    studentName: "Ama Serwaa",
+    customerName: "Ama Serwaa",
     service: services[1],
     quantity: 4,
-    pickupOption: "Student drops off",
+    pickupOption: "Customer drops off",
     scheduledFor: "Today 4PM",
     total: 140,
     status: "Booking Confirmed",
@@ -180,10 +180,10 @@ const initialIncomingOrders: Booking[] = [
     commissionStatus: "Outstanding",
   },
   {
-    id: "UPSA10242",
+    id: "ORD10242",
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    studentName: "Kwame Mensah",
+    customerName: "Kwame Mensah",
     service: services[2],
     quantity: 10,
     pickupOption: "Laundry pickup",
@@ -205,13 +205,13 @@ const generatedIncomingOrders: Booking[] = Array.from({ length: 6 }, (_, index) 
   const paymentMethod = index % 2 === 0 ? "Pay Online" : "Pay at Laundry";
   const platformCommission = Math.round(total * 0.1);
   return {
-    id: `UPSA${10400 + index}`,
+    id: `ORD${10400 + index}`,
     laundryId: "l-cleanpro",
     laundryName: "CleanPro Laundry",
-    studentName: studentNames[(index + 3) % studentNames.length],
+    customerName: customerNames[(index + 3) % customerNames.length],
     service,
     quantity,
-    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Student drops off",
+    pickupOption: index % 2 === 0 ? "Laundry pickup" : "Customer drops off",
     scheduledFor: index % 2 === 0 ? `Tomorrow ${10 + index}AM` : `Today ${4 + index}PM`,
     total,
     status: "Booking Confirmed" as Booking["status"],
@@ -258,7 +258,7 @@ const notificationTemplates = [
   },
   {
     title: "New booking",
-    body: "A student just placed a pickup request for your express service.",
+    body: "A customer just placed a pickup request for your express service.",
     tone: "accent" as const,
   },
   {
@@ -276,7 +276,7 @@ const notificationTemplates = [
 export const dummyNotifications: NotificationItem[] = Array.from({ length: 100 }, (_, index) => {
   const template = notificationTemplates[index % notificationTemplates.length];
   const group = index < 25 ? "Today" : index < 60 ? "Yesterday" : "Earlier";
-  const forMode = index % 2 === 0 ? "student" : "partner";
+  const forMode = index % 2 === 0 ? "customer" : "partner";
   const time = index < 25 ? `${index + 1} min ago` : index < 60 ? `${index - 24}h ago` : `${index - 59}d ago`;
 
   return {

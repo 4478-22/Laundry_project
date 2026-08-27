@@ -7,7 +7,7 @@ export const dummyReviews: Review[] = [
     authorName: "Ama Serwaa",
     authorAvatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop",
     rating: 5,
-    comment: "Picked up my clothes right on time and folded everything neatly. Best laundry around UPSA!",
+    comment: "Picked up my clothes right on time and folded everything neatly. Best laundry around Accra!",
     date: "2 days ago",
   },
   {

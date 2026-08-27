@@ -1,14 +1,14 @@
-// Domain models for LaundryHub.
+// Domain models for Laundex.
 // These mirror what a Flutter app's model classes would look like —
 // plain data shapes that the UI and state layers consume.
 
-export type CampusLocation =
-  | "UPSA"
+export type ServiceLocation =
+  | "Accra"
   | "Madina"
   | "Legon"
   | "Adenta";
 
-export type PickupOption = "Student drops off" | "Laundry pickup";
+export type PickupOption = "Customer drops off" | "Laundry pickup";
 
 export type OrderStatus =
   | "Booking Confirmed"
@@ -47,7 +47,7 @@ export interface Laundry {
   rating: number;
   reviewsCount: number;
   distanceMinutes: number;
-  location: CampusLocation;
+  location: ServiceLocation;
   address: string;
   verified: boolean;
   openHours: string;
@@ -68,7 +68,7 @@ export interface Booking {
   id: string;
   laundryId: string;
   laundryName: string;
-  studentName: string;
+  customerName: string;
   service: Service;
   quantity: number;
   pickupOption: PickupOption;
@@ -83,13 +83,11 @@ export interface Booking {
   commissionStatus: "Collected" | "Outstanding";
 }
 
-export interface StudentUser {
+export interface CustomerUser {
   id: string;
   name: string;
   phone: string;
   email: string;
-  university: string;
-  hostel: string;
   avatarUrl: string;
   rewardsPoints: number;
   lastCompletedBookingAt?: string;
@@ -162,4 +160,4 @@ export interface PartnerWalletState {
   transactions: WalletTransaction[];
 }
 
-export type AppMode = "student" | "partner";
+export type AppMode = "customer" | "partner";

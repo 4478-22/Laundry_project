@@ -1,6 +1,6 @@
 import type { Laundry, Review, Service } from "../models";
 
-// Realistic Ghana-context dummy laundry businesses around UPSA.
+// Realistic Ghana-context dummy laundry businesses around Accra.
 // Currency is Ghana Cedis (₵). Images are Pexels stock photo URLs.
 
 const reviewsCleanPro: Review[] = [
@@ -9,7 +9,7 @@ const reviewsCleanPro: Review[] = [
     authorName: "Ama Serwaa",
     authorAvatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop",
     rating: 5,
-    comment: "Picked up my clothes right on time and folded everything neatly. Best laundry around UPSA!",
+    comment: "Picked up my clothes right on time and folded everything neatly. Best laundry around Accra!",
     date: "2 days ago",
   },
   {
@@ -93,8 +93,8 @@ const baseLaundries: Laundry[] = [
     rating: 4.8,
     reviewsCount: 124,
     distanceMinutes: 2,
-    location: "UPSA",
-    address: "Near UPSA Main Gate, Accra",
+    location: "Accra",
+    address: "Near Accra Central, Accra",
     verified: true,
     openHours: "Mon–Sat: 7AM – 8PM",
     services: [washFold, express, ironing],
@@ -128,7 +128,7 @@ const baseLaundries: Laundry[] = [
     reviewsCount: 95,
     distanceMinutes: 12,
     location: "Legon",
-    address: "University of Ghana, Legon Campus",
+    address: "Legon, Accra",
     verified: true,
     openHours: "Mon–Sun: 8AM – 9PM",
     services: [washFold, express, ironing, dryClean],
@@ -170,12 +170,12 @@ const generatedLaundries: Laundry[] = Array.from({ length: 16 }, (_, index) => {
     "Gold Fold Laundry",
     "Lagos Lane Laundry",
     "Eco Spin",
-    "Campus Press",
+    "City Press",
     "Momo Laundry",
     "Quick Fresh Laundry",
     "Smart Wash Studio",
   ];
-  const locations: Laundry["location"][] = ["UPSA", "Madina", "Legon", "Adenta"];
+  const locations: Laundry["location"][] = ["Accra", "Madina", "Legon", "Adenta"];
   const addresses = [
     "East Legon Hills, Accra",
     "Alajo Market Road, Accra",
