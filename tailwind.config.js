@@ -80,6 +80,7 @@ export default {
         "pulse-soft": "pulseSoft 2s ease-in-out infinite",
         "check-pop": "checkPop 0.4s cubic-bezier(0.34,1.56,0.64,1)",
         "shimmer": "shimmer 1.5s linear infinite",
+        "ready-burst": "readyBurst 0.6s cubic-bezier(0.34,1.56,0.64,1)",
       },
       keyframes: {
         fadeIn: { "0%": { opacity: 0 }, "100%": { opacity: 1 } },
@@ -89,6 +90,7 @@ export default {
         pulseSoft: { "0%,100%": { opacity: 1 }, "50%": { opacity: 0.5 } },
         checkPop: { "0%": { transform: "scale(0)" }, "60%": { transform: "scale(1.2)" }, "100%": { transform: "scale(1)" } },
         shimmer: { "0%": { backgroundPosition: "-200% 0" }, "100%": { backgroundPosition: "200% 0" } },
+        readyBurst: { "0%": { transform: "scale(0.5)", opacity: 0 }, "50%": { transform: "scale(1.15)", opacity: 1 }, "100%": { transform: "scale(1)", opacity: 1 } },
       },
     },
   },

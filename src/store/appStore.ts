@@ -45,6 +45,7 @@ interface AppState {
   toggleSaved: (laundryId: string) => void;
   markAllNotificationsRead: () => void;
   deleteNotification: (id: string) => void;
+  addNotification: (notification: NotificationItem) => void;
   setBusinessSettings: (settings: BusinessSettings) => void;
   addBusinessService: (service: BusinessSettings["services"][number]) => void;
   updateBusinessService: (service: BusinessSettings["services"][number]) => void;
@@ -198,9 +199,26 @@ export const useAppStore = create<AppState>()(
         if (status === "Completed" && !b.completedAt) updates.completedAt = now;
         return Object.keys(updates).length ? { ...b, status, ...updates } : { ...b, status };
       };
+      const becameReady = currentOrder?.status !== "Ready" && status === "Ready";
+      const nextNotifications = becameReady
+        ? [
+            {
+              id: `notif-ready-${id}`,
+              title: "Laundry ready",
+              body: `Your order #${id} is ready for pickup/delivery.`,
+              time: "Just now",
+              unread: true,
+              tone: "secondary" as const,
+              forMode: "customer" as const,
+              group: "Today" as const,
+            },
+            ...s.notifications,
+          ]
+        : s.notifications;
       return {
         bookings: s.bookings.map((b) => (b.id === id ? stamp(b) : b)),
         incomingOrders: s.incomingOrders.map((b) => (b.id === id ? stamp(b) : b)),
+        notifications: nextNotifications,
         customer: shouldResetTimer
           ? { ...s.customer, lastCompletedBookingAt: now }
           : s.customer,
@@ -226,6 +244,10 @@ export const useAppStore = create<AppState>()(
   deleteNotification: (id) =>
     set((s) => ({
       notifications: s.notifications.filter((item) => item.id !== id),
+    })),
+  addNotification: (notification) =>
+    set((s) => ({
+      notifications: [notification, ...s.notifications],
     })),
   setBusinessSettings: (businessSettings) => set({ businessSettings }),
   addBusinessService: (service) =>
