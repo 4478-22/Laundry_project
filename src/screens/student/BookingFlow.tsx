@@ -7,7 +7,8 @@ import type { Booking, PickupOption, Service } from "../../models";
 import { clsx } from "clsx";
 
 // 4-step booking flow: service → quantity → pickup → date/time, with a
-// live price summary and Confirm Booking CTA.
+// live price summary and Confirm Booking CTA. Each step fits within the
+// viewport — no scrolling required.
 export function BookingFlow() {
   const { laundryId } = useParams();
   const navigate = useNavigate();
@@ -61,16 +62,16 @@ export function BookingFlow() {
   const steps = ["Service", "Quantity", "Pickup", "Schedule"];
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-50">
-      {!isAcceptingOrders && (
-        <div className="bg-warning-50 px-5 py-3 text-center">
-          <p className="text-sm font-semibold text-warning-700">
-            This laundry is currently not accepting new bookings.
-          </p>
-        </div>
-      )}
-      {/* Header with stepper */}
-      <div className="sticky top-0 z-30 bg-neutral-50/95 backdrop-blur border-b border-neutral-100 px-4 pt-12 pb-3">
+    <div className="flex h-screen flex-col bg-neutral-50 overflow-hidden">
+      {/* Header with stepper — fixed at top */}
+      <div className="shrink-0 bg-neutral-50/95 backdrop-blur border-b border-neutral-100 px-4 pt-12 pb-3">
+        {!isAcceptingOrders && (
+          <div className="mb-2 rounded-xl bg-warning-50 px-3 py-2 text-center">
+            <p className="text-xs font-semibold text-warning-700">
+              This laundry is currently not accepting new bookings.
+            </p>
+          </div>
+        )}
         <div className="flex items-center gap-3">
           <button
             onClick={() => (step === 0 ? navigate(-1) : setStep((s) => s - 1))}
@@ -98,7 +99,8 @@ export function BookingFlow() {
         </div>
       </div>
 
-      <div className="flex-1 px-5 py-5">
+      {/* Content — fills remaining space, centered, no scroll */}
+      <div className="flex flex-1 flex-col justify-center overflow-hidden px-5 py-4">
         {/* Step 1: Service */}
         {step === 0 && (
           <div className="space-y-3 animate-fade-in">
@@ -135,14 +137,14 @@ export function BookingFlow() {
 
         {/* Step 2: Quantity */}
         {step === 1 && service && (
-          <div className="space-y-5 animate-fade-in">
-            <div className="card p-5">
+          <div className="animate-fade-in">
+            <div className="card p-5 mb-4">
               <h3 className="font-display font-bold text-neutral-900">{service.name}</h3>
               <p className="text-sm text-neutral-500">₵{service.price} per {service.unit}</p>
             </div>
             <div className="card p-6 text-center">
               <p className="text-sm font-medium text-neutral-500">How much laundry?</p>
-              <div className="mt-5 flex items-center justify-center gap-6">
+              <div className="mt-6 flex items-center justify-center gap-6">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   className="flex h-12 w-12 items-center justify-center rounded-2xl bg-neutral-100 text-2xl font-bold text-neutral-700 active:scale-95 transition-transform"
@@ -164,7 +166,6 @@ export function BookingFlow() {
                 Subtotal: <span className="font-bold text-neutral-900">₵{total}</span>
               </p>
             </div>
-            <button onClick={() => setStep(2)} className="btn-primary w-full">Continue</button>
           </div>
         )}
 
@@ -250,9 +251,9 @@ export function BookingFlow() {
         )}
       </div>
 
-      {/* Price summary — always visible once a service is selected */}
+      {/* Bottom bar — fixed at bottom, always fits */}
       {service && step < 3 && (
-        <div className="sticky bottom-0 bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="shrink-0 bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-neutral-400 font-medium">
@@ -265,12 +266,14 @@ export function BookingFlow() {
               <p>{quantity}{service.unit}{step >= 2 && ` · ${pickup}`}</p>
             </div>
           </div>
+          {step === 1 && (
+            <button onClick={() => setStep(2)} className="btn-primary mt-3 w-full">Continue</button>
+          )}
         </div>
       )}
 
-      {/* Price summary + confirm CTA — only on the schedule page */}
       {service && step === 3 && (
-        <div className="sticky bottom-0 bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="shrink-0 bg-white/95 backdrop-blur border-t border-neutral-100 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <p className="text-xs text-neutral-400 font-medium">Total</p>
