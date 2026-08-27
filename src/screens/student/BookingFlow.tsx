@@ -33,13 +33,13 @@ export function BookingFlow() {
 
   const confirm = () => {
     if (!service) return;
-    const id = `UPSA${Math.floor(10000 + Math.random() * 89999)}`;
+    const id = `ORD${Math.floor(10000 + Math.random() * 89999)}`;
     const platformCommission = Math.round(total * 0.1);
     const booking: Booking = {
       id,
       laundryId: laundry.id,
       laundryName: laundry.name,
-      studentName: "Daniel",
+      customerName: "Daniel",
       service,
       quantity,
       pickupOption: pickup,
@@ -53,7 +53,7 @@ export function BookingFlow() {
       commissionStatus: "Collected",
     };
     addBooking(booking);
-    navigate(`/student/confirm/${id}`, { replace: true });
+    navigate(`/customer/confirm/${id}`, { replace: true });
   };
 
   const steps = ["Service", "Quantity", "Pickup", "Schedule"];
@@ -163,7 +163,7 @@ export function BookingFlow() {
         {step === 2 && (
           <div className="space-y-3 animate-fade-in">
             <p className="text-sm text-neutral-500">How should we handle your laundry?</p>
-            {(["Laundry pickup", "Student drops off"] as PickupOption[]).map((opt) => (
+            {(["Laundry pickup", "Customer drops off"] as PickupOption[]).map((opt) => (
               <button
                 key={opt}
                 onClick={() => {

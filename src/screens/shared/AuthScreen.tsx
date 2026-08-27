@@ -4,7 +4,7 @@ import { Phone, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 
 // Simple auth screen. Toggles between Login and Create Account.
-// Field set adapts slightly: partner uses business phone; student uses phone + email.
+// Field set adapts slightly: partner uses business phone; customer uses phone + email.
 // Auth is simulated — any submit logs in.
 interface AuthScreenProps {
   onAuthed: () => void;
@@ -24,7 +24,7 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
   const [pw, setPw] = useState("");
 
   const submit = () => {
-    setMode(isPartner ? "partner" : "student");
+    setMode(isPartner ? "partner" : "customer");
     login();
     onAuthed();
   };
@@ -70,7 +70,7 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
           <Field icon={<Mail className="h-5 w-5" />} label="Email">
             <input
               className="input-field pl-11"
-              placeholder="you@upsa.edu.gh"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               inputMode="email"
@@ -108,7 +108,7 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
           {isLogin ? "Login" : "Create account"}
         </button>
         <p className="text-center text-sm text-neutral-500">
-          {isLogin ? "New to LaundryHub?" : "Already have an account?"}{" "}
+          {isLogin ? "New to Laundex?" : "Already have an account?"}{" "}
           <button
             onClick={() => setIsLogin((v) => !v)}
             className="font-semibold text-primary-600"

@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import type { Laundry } from "../../models";
 import { RatingStars } from "../common/RatingStars";
 
-// The marketplace laundry card shown on the student home screen.
+// The marketplace laundry card shown on the customer home screen.
 // Mirrors an Airbnb-style listing card.
 
 interface LaundryCardProps {

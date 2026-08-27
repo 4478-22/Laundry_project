@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
-import { Bell, CheckCircle2, Droplets, MessageCircleMore, Sparkles, Trash2, Truck, Wallet2 } from "lucide-react";
+import { Bell, CircleCheck as CheckCircle2, Droplets, MessageCircleMore, Sparkles, Trash2, Truck, Wallet as Wallet2 } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 import { EmptyState } from "../../components/common/EmptyState";
 import { SkeletonList } from "../../components/common/LoadingSkeleton";
 
 interface StudentNotificationsProps {
-  mode?: "student" | "partner";
+  mode?: "customer" | "partner";
 }
 
-// Student notifications tab — feed of status update cards.
-export function StudentNotifications({ mode = "student" }: StudentNotificationsProps) {
+// Customer notifications tab — feed of status update cards.
+export function StudentNotifications({ mode = "customer" }: StudentNotificationsProps) {
   const notifications = useAppStore((s) => s.notifications);
   const markAllNotificationsRead = useAppStore((s) => s.markAllNotificationsRead);
   const deleteNotification = useAppStore((s) => s.deleteNotification);

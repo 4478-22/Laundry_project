@@ -20,7 +20,7 @@ export function BookingConfirmation() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-6">
         <p className="text-neutral-500">Booking not found.</p>
-        <button onClick={() => navigate("/student")} className="btn-primary">Home</button>
+        <button onClick={() => navigate("/customer")} className="btn-primary">Home</button>
       </div>
     );
   }
@@ -61,13 +61,13 @@ export function BookingConfirmation() {
 
       <div className="mt-auto space-y-3 pt-8">
         <button
-          onClick={() => navigate(`/student/track/${booking.id}`, { replace: true })}
+          onClick={() => navigate(`/customer/track/${booking.id}`, { replace: true })}
           className="btn-primary w-full"
         >
           Track Order
         </button>
         <button
-          onClick={() => navigate("/student")}
+          onClick={() => navigate("/customer")}
           className="btn-secondary w-full"
         >
           Back to Home

@@ -20,7 +20,7 @@ const slides: Slide[] = [
   {
     icon: <MapPin className="h-12 w-12" />,
     title: "Find nearby laundries",
-    description: "Discover trusted laundry businesses around UPSA.",
+    description: "Discover trusted laundry businesses near you.",
     accent: "from-primary-500 to-primary-700",
   },
   {

@@ -33,9 +33,9 @@ export function SplashScreen({ onNext }: SplashScreenProps) {
         <div className="flex h-24 w-24 items-center justify-center rounded-4xl bg-white shadow-2xl animate-scale-in">
           <LogoMark className="h-14 w-14 text-primary-600" />
         </div>
-        <h1 className="mt-6 font-display text-3xl font-extrabold tracking-tight">LaundryHub</h1>
+        <h1 className="mt-6 font-display text-3xl font-extrabold tracking-tight">Laundex</h1>
         <p className="mt-2 text-center text-primary-100 text-sm font-medium max-w-[16rem]">
-          Trusted laundry services around your campus
+          Trusted laundry services near you
         </p>
       </div>
 

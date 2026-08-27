@@ -1,13 +1,13 @@
-import { GraduationCap, Store } from "lucide-react";
+import { User, Store } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 
-// Mode selection — choose Student or Laundry Partner before authenticating.
+// Mode selection — choose Customer or Laundry Partner before authenticating.
 interface ModeSelectScreenProps {
-  onSelectStudent: () => void;
+  onSelectCustomer: () => void;
   onSelectPartner: () => void;
 }
 
-export function ModeSelectScreen({ onSelectStudent, onSelectPartner }: ModeSelectScreenProps) {
+export function ModeSelectScreen({ onSelectCustomer, onSelectPartner }: ModeSelectScreenProps) {
   const setMode = useAppStore((s) => s.setMode);
 
   return (
@@ -19,7 +19,7 @@ export function ModeSelectScreen({ onSelectStudent, onSelectPartner }: ModeSelec
             <circle cx="24" cy="15" r="2.6" fill="#fff" />
           </svg>
         </div>
-        <span className="font-display text-xl font-extrabold text-neutral-900">LaundryHub</span>
+        <span className="font-display text-xl font-extrabold text-neutral-900">Laundex</span>
       </div>
 
       <h1 className="mt-12 font-display text-2xl font-extrabold text-neutral-900">
@@ -30,17 +30,17 @@ export function ModeSelectScreen({ onSelectStudent, onSelectPartner }: ModeSelec
       <div className="mt-8 space-y-4">
         <button
           onClick={() => {
-            setMode("student");
-            onSelectStudent();
+            setMode("customer");
+            onSelectCustomer();
           }}
           className="card w-full p-5 text-left transition-all hover:shadow-card-hover active:scale-[0.99]"
         >
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600">
-              <GraduationCap className="h-7 w-7" />
+              <User className="h-7 w-7" />
             </div>
             <div className="flex-1">
-              <h3 className="font-display text-lg font-bold text-neutral-900">I'm a Student</h3>
+              <h3 className="font-display text-lg font-bold text-neutral-900">I'm a Customer</h3>
               <p className="text-sm text-neutral-500">Find laundries, book & track orders.</p>
             </div>
             <Chevron />

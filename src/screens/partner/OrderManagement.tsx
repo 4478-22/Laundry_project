@@ -55,7 +55,7 @@ export function OrderManagement() {
         <div className="card p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-display font-bold text-neutral-900">{order.studentName}</p>
+              <p className="font-display font-bold text-neutral-900">{order.customerName}</p>
               <p className="text-sm text-neutral-500">{order.service.name} · {order.quantity}{order.service.unit}</p>
             </div>
             <span className="font-display text-xl font-extrabold text-primary-700">₵{order.total}</span>

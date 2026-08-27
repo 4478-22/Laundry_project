@@ -15,7 +15,7 @@ export function OrderTracking() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-6">
         <p className="text-neutral-500">Order not found.</p>
-        <button onClick={() => navigate("/student")} className="btn-primary">Home</button>
+        <button onClick={() => navigate("/customer")} className="btn-primary">Home</button>
       </div>
     );
   }
@@ -28,7 +28,7 @@ export function OrderTracking() {
       <div className="sticky top-0 z-30 bg-neutral-50/95 backdrop-blur border-b border-neutral-100 px-4 pt-12 pb-3">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => navigate("/student/bookings")}
+            onClick={() => navigate("/customer/bookings")}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-card border border-neutral-100 active:scale-95 transition-transform"
             aria-label="Back"
           >

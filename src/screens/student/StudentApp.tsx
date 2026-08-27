@@ -11,14 +11,14 @@ import { OrderTracking } from "./OrderTracking";
 import { SettingsScreen } from "../shared/SettingsScreen";
 import { SupportCenter } from "../shared/SupportCenter";
 
-// Student app shell. Owns nested routes for all student screens and the
+// Customer app shell. Owns nested routes for all customer screens and the
 // bottom navigation. The active tab is derived from the current path.
-export function StudentApp() {
+export function CustomerApp() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Derive active tab from the first path segment under /student.
-  const segment = location.pathname.replace("/student/", "").split("/")[0];
+  // Derive active tab from the first path segment under /customer.
+  const segment = location.pathname.replace("/customer/", "").split("/")[0];
   const activeTab = ["home", "bookings", "notifications", "profile"].includes(segment)
     ? segment
     : "home";
@@ -44,9 +44,9 @@ export function StudentApp() {
       </div>
       {!hideNav && (
         <BottomNav
-          mode="student"
+          mode="customer"
           active={activeTab}
-          onChange={(k) => navigate(k === "home" ? "/student" : `/student/${k}`)}
+          onChange={(k) => navigate(k === "home" ? "/customer" : `/customer/${k}`)}
         />
       )}
     </div>

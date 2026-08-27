@@ -77,7 +77,7 @@ export function BusinessSettings() {
           <div className="flex items-center justify-between bg-gradient-to-r from-primary-600 to-primary-700 px-4 py-4 text-white">
             <div>
               <p className="font-display text-lg font-bold">Business Information</p>
-              <p className="text-sm text-primary-100">Keep your details current for students and investors.</p>
+              <p className="text-sm text-primary-100">Keep your details current for customers and investors.</p>
             </div>
             <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15">
               <Camera className="h-5 w-5" />

@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Package, Clock, CheckCircle2, DollarSign, Star, ChevronRight, ArrowUpRight,
-} from "lucide-react";
+import { Package, Clock, CircleCheck as CheckCircle2, DollarSign, Star, ChevronRight, ArrowUpRight } from "lucide-react";
 import { StatCard } from "../../components/common/SectionHeader";
 import { useAppStore } from "../../store/appStore";
 import { StatusBadge } from "../../components/common/StatusBadge";
@@ -90,7 +88,7 @@ export function PartnerDashboard() {
                   <Package className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="font-semibold text-neutral-900">{o.studentName}</p>
+                  <p className="font-semibold text-neutral-900">{o.customerName}</p>
                   <p className="text-sm text-neutral-500">{o.service.name} · {o.quantity}{o.service.unit}</p>
                 </div>
               </div>

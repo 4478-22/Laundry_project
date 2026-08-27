@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Clock, Edit3, Trash2, X } from "lucide-react";
+import { Plus, Clock, CreditCard as Edit3, Trash2, X } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 
 const emptyFormState: {
@@ -204,7 +204,7 @@ export function PartnerServices() {
                   onChange={(event) => setFormState((current) => ({ ...current, description: event.target.value }))}
                   rows={3}
                   className="input-field mt-2 w-full"
-                  placeholder="Fast, reliable laundry service for students."
+                  placeholder="Fast, reliable laundry service for everyone."
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">

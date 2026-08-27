@@ -1,0 +1,85 @@
+src/components/cards/LaundryCard.tsx:6:// The marketplace laundry card shown on the student home screen.
+src/components/navigation/BottomNav.tsx:5:// Bottom navigation bar. Two configs — student and partner — matching the
+src/components/navigation/BottomNav.tsx:14:const studentTabs: NavTab[] = [
+src/components/navigation/BottomNav.tsx:29:  mode: "student" | "partner";
+src/components/navigation/BottomNav.tsx:35:  const tabs = mode === "student" ? studentTabs : partnerTabs;
+src/App.tsx:15:import { CustomerApp } from "./screens/student/StudentApp";
+src/screens/partner/IncomingOrders.tsx:36:                    <p className="font-display font-bold text-neutral-900">{o.studentName}</p>
+src/screens/partner/IncomingOrders.tsx:111:              <p className="font-semibold text-neutral-900">{o.studentName} · #{o.id}</p>
+src/screens/partner/OrderManagement.tsx:58:              <p className="font-display font-bold text-neutral-900">{order.studentName}</p>
+src/screens/partner/PartnerDashboard.tsx:93:                  <p className="font-semibold text-neutral-900">{o.studentName}</p>
+src/screens/partner/PartnerServices.tsx:207:                  placeholder="Fast, reliable laundry service for students."
+src/screens/partner/PartnerApp.tsx:12:// Partner app shell — mirrors StudentApp structure with partner routes.
+src/screens/shared/ModeSelectScreen.tsx:4:// Mode selection — choose Student or Laundry Partner before authenticating.
+src/screens/shared/ModeSelectScreen.tsx:6:  onSelectStudent: () => void;
+src/screens/shared/ModeSelectScreen.tsx:10:export function ModeSelectScreen({ onSelectStudent, onSelectPartner }: ModeSelectScreenProps) {
+src/screens/shared/ModeSelectScreen.tsx:33:            setMode("student");
+src/screens/shared/ModeSelectScreen.tsx:34:            onSelectStudent();
+src/screens/shared/ModeSelectScreen.tsx:43:              <h3 className="font-display text-lg font-bold text-neutral-900">I'm a Student</h3>
+src/screens/shared/AuthScreen.tsx:7:// Field set adapts slightly: partner uses business phone; student uses phone + email.
+src/screens/shared/AuthScreen.tsx:27:    setMode(isPartner ? "partner" : "student");
+src/screens/shared/AuthScreen.tsx:73:              placeholder="you@upsa.edu.gh"
+src/screens/shared/OnboardingScreen.tsx:23:    description: "Discover trusted laundry businesses around UPSA.",
+src/screens/shared/SplashScreen.tsx:38:          Trusted laundry services around your campus
+src/screens/shared/BusinessSettings.tsx:80:              <p className="text-sm text-primary-100">Keep your details current for students and investors.</p>
+src/screens/student/StudentApp.tsx:3:import { StudentHome } from "./StudentHome";
+src/screens/student/StudentApp.tsx:4:import { StudentBookings } from "./StudentBookings";
+src/screens/student/StudentApp.tsx:5:import { StudentNotifications } from "./StudentNotifications";
+src/screens/student/StudentApp.tsx:6:import { StudentProfile } from "./StudentProfile";
+src/screens/student/StudentApp.tsx:14:// Student app shell. Owns nested routes for all student screens and the
+src/screens/student/StudentApp.tsx:16:export function StudentApp() {
+src/screens/student/StudentApp.tsx:20:  // Derive active tab from the first path segment under /student.
+src/screens/student/StudentApp.tsx:21:  const segment = location.pathname.replace("/student/", "").split("/")[0];
+src/screens/student/StudentApp.tsx:33:          <Route index element={<StudentHome />} />
+src/screens/student/StudentApp.tsx:34:          <Route path="bookings" element={<StudentBookings />} />
+src/screens/student/StudentApp.tsx:35:          <Route path="notifications" element={<StudentNotifications />} />
+src/screens/student/StudentApp.tsx:36:          <Route path="profile" element={<StudentProfile />} />
+src/screens/student/StudentApp.tsx:47:          mode="student"
+src/screens/student/StudentApp.tsx:49:          onChange={(k) => navigate(k === "home" ? "/student" : `/student/${k}`)}
+src/screens/student/BookingConfirmation.tsx:23:        <button onClick={() => navigate("/student")} className="btn-primary">Home</button>
+src/screens/student/BookingConfirmation.tsx:64:          onClick={() => navigate(`/student/track/${booking.id}`, { replace: true })}
+src/screens/student/BookingConfirmation.tsx:70:          onClick={() => navigate("/student")}
+src/screens/student/OrderTracking.tsx:18:        <button onClick={() => navigate("/student")} className="btn-primary">Home</button>
+src/screens/student/OrderTracking.tsx:31:            onClick={() => navigate("/student/bookings")}
+src/screens/student/StudentBookings.tsx:9:// Student bookings tab — list of the student's orders, grouped by active/past.
+src/screens/student/StudentBookings.tsx:10:export function StudentBookings() {
+src/screens/student/StudentBookings.tsx:47:              <BookingRow key={b.id} booking={b} onClick={() => navigate(`/student/track/${b.id}`)} />
+src/screens/student/StudentBookings.tsx:58:              <BookingRow key={b.id} booking={b} onClick={() => navigate(`/student/track/${b.id}`)} />
+src/screens/student/StudentBookings.tsx:66:          <EmptyState icon={<Package className="h-6 w-6" />} title="No bookings yet" description="Browse nearby laundries and book your first service." actionLabel="Find Laundries" onAction={() => navigate("/student")} />
+src/screens/student/BookingFlow.tsx:36:    const id = `UPSA${Math.floor(10000 + Math.random() * 89999)}`;
+src/screens/student/BookingFlow.tsx:42:      studentName: "Daniel",
+src/screens/student/BookingFlow.tsx:56:    navigate(`/student/confirm/${id}`, { replace: true });
+src/screens/student/BookingFlow.tsx:166:            {(["Laundry pickup", "Student drops off"] as PickupOption[]).map((opt) => (
+src/screens/student/StudentProfile.tsx:10:// Student profile tab — personal info, stats, saved laundries, rewards, menu.
+src/screens/student/StudentProfile.tsx:11:export function StudentProfile() {
+src/screens/student/StudentProfile.tsx:13:  const student = useAppStore((s) => s.student);
+src/screens/student/StudentProfile.tsx:17:  const expireStudentPoints = useAppStore((s) => s.expireStudentPoints);
+src/screens/student/StudentProfile.tsx:29:    expireStudentPoints();
+src/screens/student/StudentProfile.tsx:30:  }, [expireStudentPoints]);
+src/screens/student/StudentProfile.tsx:33:  const lastCompletedAt = student.lastCompletedBookingAt ? new Date(student.lastCompletedBookingAt) : null;
+src/screens/student/StudentProfile.tsx:39:  const displayPoints = isExpired ? 0 : student.rewardsPoints;
+src/screens/student/StudentProfile.tsx:55:          <img src={student.avatarUrl} alt={student.name} className="h-16 w-16 rounded-2xl object-cover ring-2 ring-white/30" />
+src/screens/student/StudentProfile.tsx:57:            <h1 className="font-display text-xl font-extrabold">{student.name}</h1>
+src/screens/student/StudentProfile.tsx:58:            <p className="text-sm text-primary-100">{student.email}</p>
+src/screens/student/StudentProfile.tsx:84:              <p className="mt-1 font-display text-lg font-bold text-neutral-900">LAUNDRY{student.rewardsPoints}</p>
+src/screens/student/StudentProfile.tsx:97:          <InfoRow icon={<Phone className="h-4 w-4" />} label="Phone" value={student.phone} />
+src/screens/student/StudentProfile.tsx:98:          <InfoRow icon={<Mail className="h-4 w-4" />} label="Email" value={student.email} />
+src/screens/student/StudentProfile.tsx:99:          <InfoRow icon={<GraduationCap className="h-4 w-4" />} label="University" value={student.university} />
+src/screens/student/StudentProfile.tsx:100:          <InfoRow icon={<Home className="h-4 w-4" />} label="Hostel" value={student.hostel} />
+src/screens/student/StudentProfile.tsx:109:              <button key={l.id} onClick={() => navigate(`/student/laundry/${l.id}`)} className="card flex w-full items-center gap-3 p-3 text-left transition-transform active:scale-[0.99]">
+src/screens/student/StudentProfile.tsx:129:          <MenuRow onClick={() => navigate("/student/settings")} icon={<Settings className="h-4 w-4" />} label="Settings" />
+src/screens/student/StudentProfile.tsx:130:          <MenuRow onClick={() => navigate("/student/help")} icon={<HelpCircle className="h-4 w-4" />} label="Help & Support" />
+src/screens/student/StudentNotifications.tsx:7:interface StudentNotificationsProps {
+src/screens/student/StudentNotifications.tsx:8:  mode?: "student" | "partner";
+src/screens/student/StudentNotifications.tsx:11:// Student notifications tab — feed of status update cards.
+src/screens/student/StudentNotifications.tsx:12:export function StudentNotifications({ mode = "student" }: StudentNotificationsProps) {
+src/screens/student/StudentHome.tsx:14:// Student home dashboard — Uber/Airbnb-style marketplace landing.
+src/screens/student/StudentHome.tsx:15:export function StudentHome() {
+src/screens/student/StudentHome.tsx:17:  const student = useAppStore((s) => s.student);
+src/screens/student/StudentHome.tsx:145:            <p className="text-sm font-medium text-primary-100">Hello, {student.name} 👋</p>
+src/screens/student/StudentHome.tsx:148:              <span className="text-sm font-semibold">Near UPSA</span>
+src/screens/student/StudentHome.tsx:151:          <button onClick={() => navigate("/student/notifications")} className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-white/15 backdrop-blur transition-transform active:scale-95" aria-label="Notifications">
+src/screens/student/StudentHome.tsx:183:                        navigate(`/student/laundry/${suggestion.value}`);
+src/screens/student/StudentHome.tsx:238:              <LaundryCard key={laundry.id} laundry={laundry} onViewDetails={() => navigate(`/student/laundry/${laundry.id}`)} />
+src/screens/student/StudentHome.tsx:251:              <LaundryCard key={laundry.id} laundry={laundry} onViewDetails={() => navigate(`/student/laundry/${laundry.id}`)} />
+src/screens/student/LaundryDetails.tsx:125:          onClick={() => navigate(`/student/book/${laundry.id}`)}

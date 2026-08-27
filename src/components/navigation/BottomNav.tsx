@@ -1,8 +1,8 @@
 import { clsx } from "clsx";
-import { Home, CalendarClock, Bell, User, LayoutDashboard, Package, Sparkles } from "lucide-react";
+import { Hop as Home, CalendarClock, Bell, User, LayoutDashboard, Package, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
-// Bottom navigation bar. Two configs — student and partner — matching the
+// Bottom navigation bar. Two configs — customer and partner — matching the
 // requested tab sets.
 
 export interface NavTab {
@@ -11,7 +11,7 @@ export interface NavTab {
   icon: ReactNode;
 }
 
-const studentTabs: NavTab[] = [
+const customerTabs: NavTab[] = [
   { key: "home", label: "Home", icon: <Home className="h-5 w-5" /> },
   { key: "bookings", label: "Bookings", icon: <CalendarClock className="h-5 w-5" /> },
   { key: "notifications", label: "Alerts", icon: <Bell className="h-5 w-5" /> },
@@ -26,13 +26,13 @@ const partnerTabs: NavTab[] = [
 ];
 
 interface BottomNavProps {
-  mode: "student" | "partner";
+  mode: "customer" | "partner";
   active: string;
   onChange: (key: string) => void;
 }
 
 export function BottomNav({ mode, active, onChange }: BottomNavProps) {
-  const tabs = mode === "student" ? studentTabs : partnerTabs;
+  const tabs = mode === "customer" ? customerTabs : partnerTabs;
   return (
     <nav className="sticky bottom-0 z-30 border-t border-neutral-100 bg-white/95 backdrop-blur-md px-2 py-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
       <div className="flex items-center justify-around">
