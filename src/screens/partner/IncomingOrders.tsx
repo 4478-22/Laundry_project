@@ -55,9 +55,9 @@ export function IncomingOrders() {
                     acceptOrder(o.id);
                     navigate(`/partner/manage/${o.id}`);
                   }}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-secondary-600 py-3 font-semibold text-white active:scale-95 transition-transform hover:bg-secondary-700"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-secondary-600 py-3.5 font-semibold text-white shadow-sm transition-all duration-200 hover:bg-secondary-700 hover:shadow-md active:scale-[0.98]"
                 >
-                  <Check className="h-5 w-5" /> Accept
+                  <Check className="h-5 w-5" strokeWidth={2.5} /> Accept Order
                 </button>
               </div>
             </div>

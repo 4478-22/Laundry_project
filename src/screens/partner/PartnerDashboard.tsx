@@ -64,7 +64,7 @@ export function PartnerDashboard() {
               <span
                 className={clsx(
                   "text-xs font-bold uppercase tracking-wide transition-colors duration-300",
-                  isAcceptingOrders ? "text-secondary-600" : "text-neutral-400",
+                  isAcceptingOrders ? "text-secondary-500" : "text-neutral-400",
                 )}
               >
                 {isAcceptingOrders ? "ON" : "OFF"}
@@ -75,16 +75,18 @@ export function PartnerDashboard() {
                 aria-checked={isAcceptingOrders}
                 aria-label="Toggle accepting orders"
                 className={clsx(
-                  "relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ease-in-out",
-                  isAcceptingOrders ? "bg-secondary-200" : "bg-neutral-200",
+                  "relative h-6 w-11 shrink-0 rounded-full border transition-colors duration-300 ease-in-out",
+                  isAcceptingOrders
+                    ? "border-secondary-200 bg-secondary-50"
+                    : "border-neutral-200 bg-neutral-100",
                 )}
               >
                 <span
                   className={clsx(
-                    "absolute top-1 h-5 w-5 rounded-full shadow-sm transition-all duration-300 ease-in-out",
+                    "absolute top-1/2 h-[18px] w-[18px] -translate-y-1/2 rounded-full shadow-sm transition-all duration-300 ease-in-out",
                     isAcceptingOrders
-                      ? "translate-x-6 bg-secondary-600"
-                      : "translate-x-1 bg-neutral-400",
+                      ? "left-[calc(100%-22px)] bg-secondary-500"
+                      : "left-1 bg-neutral-300",
                   )}
                 />
               </button>
