@@ -172,9 +172,10 @@ export const useAppStore = create<AppState>((set) => ({
           status: "Pending",
         });
       }
+      const now = new Date().toISOString();
       return {
-        bookings: [booking, ...state.bookings],
-        incomingOrders: [booking, ...state.incomingOrders],
+        bookings: [{ ...booking, bookingCreatedAt: now }, ...state.bookings],
+        incomingOrders: [{ ...booking, bookingCreatedAt: now }, ...state.incomingOrders],
         partnerWallet: {
           ...nextWallet,
           transactions: nextTransactions,
@@ -185,11 +186,20 @@ export const useAppStore = create<AppState>((set) => ({
     set((s) => {
       const currentOrder = s.bookings.find((b) => b.id === id) ?? s.incomingOrders.find((b) => b.id === id);
       const shouldResetTimer = currentOrder?.status !== "Completed" && status === "Completed";
+      const now = new Date().toISOString();
+      const stamp = (b: Booking): Booking => {
+        const updates: Partial<Booking> = {};
+        if (status === "Pickup Scheduled" && !b.pickupScheduledAt) updates.pickupScheduledAt = now;
+        if (status === "Washing" && !b.processingStartedAt) updates.processingStartedAt = now;
+        if (status === "Ready" && !b.readyAt) updates.readyAt = now;
+        if (status === "Completed" && !b.completedAt) updates.completedAt = now;
+        return Object.keys(updates).length ? { ...b, status, ...updates } : { ...b, status };
+      };
       return {
-        bookings: s.bookings.map((b) => (b.id === id ? { ...b, status } : b)),
-        incomingOrders: s.incomingOrders.map((b) => (b.id === id ? { ...b, status } : b)),
+        bookings: s.bookings.map((b) => (b.id === id ? stamp(b) : b)),
+        incomingOrders: s.incomingOrders.map((b) => (b.id === id ? stamp(b) : b)),
         customer: shouldResetTimer
-          ? { ...s.customer, lastCompletedBookingAt: new Date().toISOString() }
+          ? { ...s.customer, lastCompletedBookingAt: now }
           : s.customer,
       };
     }),

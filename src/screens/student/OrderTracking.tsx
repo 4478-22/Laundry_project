@@ -1,11 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Check, Bell, ChevronLeft } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
-import { orderTimeline } from "../../data";
+import { customerTimeline } from "../../data";
+import { toCustomerStage } from "../../models";
+import type { CustomerStage } from "../../models";
 import { clsx } from "clsx";
 
-// Order tracking screen — vertical timeline showing the order's progress,
-// plus notification cards for status updates.
+// Order tracking screen — simplified 3-stage timeline the customer sees:
+// Booking Confirmed → Pickup Scheduled → Ready.
+// Internal partner statuses (Accepted, Washing, etc.) are collapsed into
+// these three customer-facing stages.
 export function OrderTracking() {
   const { bookingId } = useParams();
   const navigate = useNavigate();
@@ -15,12 +19,13 @@ export function OrderTracking() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 px-6">
         <p className="text-neutral-500">Order not found.</p>
-        <button onClick={() => navigate("/customer")} className="btn-primary">Home</button>
+        <button onClick={() => navigate("/customer/bookings")} className="btn-primary">Home</button>
       </div>
     );
   }
 
-  const currentIndex = orderTimeline.indexOf(booking.status);
+  const currentStage = toCustomerStage(booking.status);
+  const currentIndex = customerTimeline.indexOf(currentStage);
 
   return (
     <div className="min-h-screen bg-neutral-50 pb-10">
@@ -58,12 +63,12 @@ export function OrderTracking() {
       <div className="px-5 pt-6">
         <h2 className="font-display text-lg font-bold text-neutral-900">Order Status</h2>
         <div className="mt-4 space-y-1">
-          {orderTimeline.map((status, i) => {
+          {customerTimeline.map((stage, i) => {
             const done = i < currentIndex;
             const active = i === currentIndex;
             const pending = i > currentIndex;
             return (
-              <div key={status} className="flex gap-4">
+              <div key={stage} className="flex gap-4">
                 {/* Line + dot */}
                 <div className="flex flex-col items-center">
                   <div
@@ -82,7 +87,7 @@ export function OrderTracking() {
                       <span className="h-2 w-2 rounded-full bg-neutral-400" />
                     )}
                   </div>
-                  {i < orderTimeline.length - 1 && (
+                  {i < customerTimeline.length - 1 && (
                     <div
                       className={clsx(
                         "w-0.5 flex-1 min-h-[2.5rem] rounded-full",
@@ -101,11 +106,11 @@ export function OrderTracking() {
                       pending && "text-neutral-400",
                     )}
                   >
-                    {status}
+                    {stage}
                   </p>
                   {active && (
                     <p className="mt-0.5 text-sm text-neutral-500">
-                      {activeLabel(status)}
+                      {activeLabel(stage)}
                     </p>
                   )}
                 </div>
@@ -120,14 +125,8 @@ export function OrderTracking() {
         <h2 className="font-display text-lg font-bold text-neutral-900">Updates</h2>
         <div className="mt-3 space-y-3">
           <NotifCard
-            title="Your laundry is being washed"
-            body="CleanPro Laundry has started washing your clothes. You'll be notified when ready."
-            time="15 min ago"
-            tone="accent"
-          />
-          <NotifCard
             title="Pickup scheduled"
-            body="Your laundry will be picked up tomorrow at 10AM."
+            body="Your laundry will be picked up at the scheduled time."
             time="1 hour ago"
             tone="primary"
           />
@@ -143,16 +142,14 @@ export function OrderTracking() {
   );
 }
 
-function activeLabel(status: string): string {
-  switch (status) {
-    case "Washing":
-      return "Your clothes are being washed right now.";
+function activeLabel(stage: CustomerStage): string {
+  switch (stage) {
+    case "Booking Confirmed":
+      return "Your booking has been confirmed.";
+    case "Pickup Scheduled":
+      return "Your laundry pickup has been scheduled.";
     case "Ready":
       return "Your laundry is ready for pickup/delivery.";
-    case "Completed":
-      return "Order complete. Enjoy your fresh clothes!";
-    default:
-      return "In progress…";
   }
 }
 

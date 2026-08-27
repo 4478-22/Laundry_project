@@ -18,6 +18,24 @@ export type OrderStatus =
   | "Ready"
   | "Completed";
 
+/** The three stages the customer sees on the tracking screen. */
+export type CustomerStage = "Booking Confirmed" | "Pickup Scheduled" | "Ready";
+
+/** Maps any internal OrderStatus to the customer-facing stage it belongs to. */
+export function toCustomerStage(status: OrderStatus): CustomerStage {
+  switch (status) {
+    case "Booking Confirmed":
+    case "Laundry Accepted":
+      return "Booking Confirmed";
+    case "Pickup Scheduled":
+    case "Washing":
+      return "Pickup Scheduled";
+    case "Ready":
+    case "Completed":
+      return "Ready";
+  }
+}
+
 export interface Service {
   id: string;
   name: string;
@@ -81,6 +99,13 @@ export interface Booking {
   platformCommission: number;
   laundryReceives: number;
   commissionStatus: "Collected" | "Outstanding";
+  /** Performance tracking timestamps (ISO strings). */
+  bookingCreatedAt?: string;
+  pickupScheduledAt?: string;
+  pickupCompletedAt?: string;
+  processingStartedAt?: string;
+  readyAt?: string;
+  completedAt?: string;
 }
 
 export interface CustomerUser {

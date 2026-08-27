@@ -4,6 +4,7 @@ export {
   dummyOrders,
   dummyIncomingOrders,
   orderTimeline,
+  customerTimeline,
   dummyNotifications,
   dummyWalletTransactions,
 } from "./dummy_orders";

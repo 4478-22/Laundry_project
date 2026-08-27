@@ -225,7 +225,7 @@ const generatedIncomingOrders: Booking[] = Array.from({ length: 6 }, (_, index) 
 
 export const dummyIncomingOrders: Booking[] = [...initialIncomingOrders, ...generatedIncomingOrders];
 
-// Ordered timeline used by the tracking screen.
+// Ordered timeline used by the partner order management screen.
 export const orderTimeline: OrderStatus[] = [
   "Booking Confirmed",
   "Laundry Accepted",
@@ -234,6 +234,13 @@ export const orderTimeline: OrderStatus[] = [
   "Ready",
   "Completed",
 ];
+
+// The three stages shown to customers on the tracking screen.
+export const customerTimeline = [
+  "Booking Confirmed",
+  "Pickup Scheduled",
+  "Ready",
+] as const;
 
 const notificationTemplates = [
   {
