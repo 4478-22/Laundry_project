@@ -13,14 +13,28 @@ export function ModeSelectScreen({ onSelectStudent, onSelectPartner, onSelectAdm
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50 px-6 pt-16 pb-10">
-      <div className="flex items-center gap-2">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-600 text-white">
-          <svg viewBox="0 0 48 48" fill="none" className="h-7 w-7">
-            <path d="M24 8c-4.4 0-7.5 2.6-7.5 7.6 0 2.3 1 4.2 2.3 5.6l-2.9 14.1a2.3 2.3 0 0 0 2.3 2.7h11.6a2.3 2.3 0 0 0 2.3-2.7l-2.9-14.1c1.3-1.4 2.3-3.3 2.3-5.6C31.5 10.6 28.4 8 24 8z" fill="currentColor" />
-            <circle cx="24" cy="15" r="2.6" fill="#fff" />
-          </svg>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-600 text-white">
+            <svg viewBox="0 0 48 48" fill="none" className="h-7 w-7">
+              <path d="M24 8c-4.4 0-7.5 2.6-7.5 7.6 0 2.3 1 4.2 2.3 5.6l-2.9 14.1a2.3 2.3 0 0 0 2.3 2.7h11.6a2.3 2.3 0 0 0 2.3-2.7l-2.9-14.1c1.3-1.4 2.3-3.3 2.3-5.6C31.5 10.6 28.4 8 24 8z" fill="currentColor" />
+              <circle cx="24" cy="15" r="2.6" fill="#fff" />
+            </svg>
+          </div>
+          <span className="font-display text-xl font-extrabold text-neutral-900">Laundex</span>
         </div>
-        <span className="font-display text-xl font-extrabold text-neutral-900">Laundex</span>
+        {onSelectAdmin && (
+          <button
+            onClick={() => {
+              setMode("admin");
+              onSelectAdmin();
+            }}
+            className="flex items-center gap-2 rounded-xl bg-neutral-800 px-3 py-2 text-white transition-all active:scale-95"
+          >
+            <Shield className="h-4 w-4" />
+            <span className="text-xs font-bold">Super Admin</span>
+          </button>
+        )}
       </div>
 
       <h1 className="mt-12 font-display text-2xl font-extrabold text-neutral-900">
@@ -67,26 +81,6 @@ export function ModeSelectScreen({ onSelectStudent, onSelectPartner, onSelectAdm
           </div>
         </button>
 
-        {onSelectAdmin && (
-          <button
-            onClick={() => {
-              setMode("admin");
-              onSelectAdmin();
-            }}
-            className="card w-full p-5 text-left transition-all hover:shadow-card-hover active:scale-[0.99]"
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-neutral-800 text-white">
-                <Shield className="h-7 w-7" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-display text-lg font-bold text-neutral-900">Super Admin</h3>
-                <p className="text-sm text-neutral-500">Control center for the marketplace.</p>
-              </div>
-              <Chevron />
-            </div>
-          </button>
-        )}
       </div>
     </div>
   );
