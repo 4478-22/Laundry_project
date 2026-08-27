@@ -1,13 +1,14 @@
-import { User, Store } from "lucide-react";
+import { User, Store, Shield } from "lucide-react";
 import { useAppStore } from "../../store/appStore";
 
 // Mode selection — choose Student or Laundry Partner before authenticating.
 interface ModeSelectScreenProps {
   onSelectStudent: () => void;
   onSelectPartner: () => void;
+  onSelectAdmin?: () => void;
 }
 
-export function ModeSelectScreen({ onSelectStudent, onSelectPartner }: ModeSelectScreenProps) {
+export function ModeSelectScreen({ onSelectStudent, onSelectPartner, onSelectAdmin }: ModeSelectScreenProps) {
   const setMode = useAppStore((s) => s.setMode);
 
   return (
@@ -65,6 +66,27 @@ export function ModeSelectScreen({ onSelectStudent, onSelectPartner }: ModeSelec
             <Chevron />
           </div>
         </button>
+
+        {onSelectAdmin && (
+          <button
+            onClick={() => {
+              setMode("admin");
+              onSelectAdmin();
+            }}
+            className="card w-full p-5 text-left transition-all hover:shadow-card-hover active:scale-[0.99]"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-neutral-800 text-white">
+                <Shield className="h-7 w-7" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-display text-lg font-bold text-neutral-900">Super Admin</h3>
+                <p className="text-sm text-neutral-500">Control center for the marketplace.</p>
+              </div>
+              <Chevron />
+            </div>
+          </button>
+        )}
       </div>
     </div>
   );

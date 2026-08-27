@@ -185,4 +185,84 @@ export interface PartnerWalletState {
   transactions: WalletTransaction[];
 }
 
-export type AppMode = "student" | "partner";
+// --- Super Admin models ---
+
+export type IssueType =
+  | "Order problem"
+  | "Pickup problem"
+  | "Missing laundry"
+  | "Damaged laundry"
+  | "Incorrect order"
+  | "Partner issue"
+  | "Customer issue"
+  | "Payment issue"
+  | "Other";
+
+export type IssueStatus = "Open" | "Investigating" | "Resolved";
+
+export type PartnerAccountStatus = "Active" | "Suspended" | "Review Required";
+
+export type SubscriptionPlan = "Free" | "Growth" | "Premium";
+export type SubscriptionStatus = "Active" | "Past Due" | "Cancelled";
+
+export interface AdminIssue {
+  id: string;
+  type: IssueType;
+  status: IssueStatus;
+  reporter: string;
+  reporterRole: "student" | "partner";
+  orderId?: string;
+  laundryName?: string;
+  description: string;
+  createdAt: string;
+  internalNote?: string;
+}
+
+export interface AdminPartner {
+  id: string;
+  businessName: string;
+  location: ServiceLocation;
+  address: string;
+  rating: number;
+  reviewsCount: number;
+  ordersCompleted: number;
+  avgProcessingTime: string;
+  acceptingOrders: boolean;
+  subscriptionPlan: SubscriptionPlan;
+  accountStatus: PartnerAccountStatus;
+  dateJoined: string;
+  imageUrl: string;
+  services: Service[];
+}
+
+export interface AdminStudent {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  orderCount: number;
+  accountStatus: "Active" | "Suspended";
+  dateJoined: string;
+  avatarUrl: string;
+}
+
+export interface AdminSubscription {
+  partnerId: string;
+  partnerName: string;
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  dateStarted: string;
+}
+
+export interface PendingPartner {
+  id: string;
+  businessName: string;
+  ownerName: string;
+  location: ServiceLocation;
+  phone: string;
+  email: string;
+  appliedAt: string;
+  services: Service[];
+}
+
+export type AppMode = "student" | "partner" | "admin";

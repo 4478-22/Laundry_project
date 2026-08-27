@@ -14,6 +14,7 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
   const { mode } = useParams();
   const navigate = useNavigate();
   const isPartner = mode === "partner";
+  const isAdmin = mode === "admin";
   const login = useAppStore((s) => s.login);
   const setMode = useAppStore((s) => s.setMode);
 
@@ -24,7 +25,7 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
   const [pw, setPw] = useState("");
 
   const submit = () => {
-    setMode(isPartner ? "partner" : "student");
+    setMode(isPartner ? "partner" : isAdmin ? "admin" : "student");
     login();
     onAuthed();
   };
@@ -49,14 +50,16 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
           {isLogin ? "Welcome back" : "Create your account"}
         </h1>
         <p className="mt-1.5 text-neutral-500">
-          {isPartner
-            ? "Sign in to your laundry business dashboard."
-            : "Sign in to manage your laundry bookings."}
+          {isAdmin
+            ? "Sign in to the Laundex control center."
+            : isPartner
+              ? "Sign in to your laundry business dashboard."
+              : "Sign in to manage your laundry bookings."}
         </p>
       </div>
 
       <div className="mt-8 space-y-3.5">
-        <Field icon={<Phone className="h-5 w-5" />} label={isPartner ? "Business phone" : "Phone number"}>
+        <Field icon={<Phone className="h-5 w-5" />} label={isPartner ? "Business phone" : isAdmin ? "Admin phone" : "Phone number"}>
           <input
             className="input-field pl-11"
             placeholder="+233 24 000 0000"
@@ -67,7 +70,7 @@ export function AuthScreen({ onAuthed }: AuthScreenProps) {
         </Field>
 
         {!isPartner && (
-          <Field icon={<Mail className="h-5 w-5" />} label="Email">
+          <Field icon={<Mail className="h-5 w-5" />} label={isAdmin ? "Admin email" : "Email"}>
             <input
               className="input-field pl-11"
               placeholder="you@example.com"

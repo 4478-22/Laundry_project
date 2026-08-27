@@ -14,6 +14,7 @@ import { AuthScreen } from "./screens/shared/AuthScreen";
 import { ModeSelectScreen } from "./screens/shared/ModeSelectScreen";
 import { StudentApp } from "./screens/student/StudentApp";
 import { PartnerApp } from "./screens/partner/PartnerApp";
+import { AdminApp } from "./screens/admin/AdminApp";
 
 // Top-level router. Entry flow: splash → onboarding → mode select → auth → app.
 // Auth is simulated — any input logs in.
@@ -47,12 +48,13 @@ function RootRouter() {
           <ModeSelectScreen
             onSelectStudent={() => navigate("/auth/student")}
             onSelectPartner={() => navigate("/auth/partner")}
+            onSelectAdmin={() => navigate("/auth/admin")}
           />
         }
       />
       <Route
         path="/auth/:mode"
-        element={<AuthScreen onAuthed={() => navigate(mode === "partner" ? "/partner" : "/student")} />}
+        element={<AuthScreen onAuthed={() => navigate(mode === "partner" ? "/partner" : mode === "admin" ? "/admin" : "/student")} />}
       />
       <Route
         path="/student/*"
@@ -61,6 +63,10 @@ function RootRouter() {
       <Route
         path="/partner/*"
         element={isAuthed ? <PartnerApp /> : <Navigate to="/auth/partner" replace />}
+      />
+      <Route
+        path="/admin/*"
+        element={isAuthed ? <AdminApp /> : <Navigate to="/auth/admin" replace />}
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

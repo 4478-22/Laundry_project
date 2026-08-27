@@ -9,3 +9,10 @@ export {
   dummyWalletTransactions,
 } from "./dummy_orders";
 export { dummyReviews } from "./dummy_reviews";
+export {
+  adminPartners,
+  adminStudents,
+  adminIssues,
+  adminSubscriptions,
+  pendingPartners,
+} from "./dummy_admin";
