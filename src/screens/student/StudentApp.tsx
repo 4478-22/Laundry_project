@@ -10,12 +10,14 @@ import { BookingConfirmation } from "./BookingConfirmation";
 import { OrderTracking } from "./OrderTracking";
 import { SettingsScreen } from "../shared/SettingsScreen";
 import { SupportCenter } from "../shared/SupportCenter";
+import { useAppStore } from "../../store/appStore";
 
 // Customer app shell. Owns nested routes for all customer screens and the
 // bottom navigation. The active tab is derived from the current path.
 export function CustomerApp() {
   const navigate = useNavigate();
   const location = useLocation();
+  const unreadCount = useAppStore((s) => s.notifications.filter((n) => n.unread && n.forMode === "customer").length);
 
   // Derive active tab from the first path segment under /customer.
   const segment = location.pathname.replace("/customer/", "").split("/")[0];
@@ -28,7 +30,7 @@ export function CustomerApp() {
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50">
-      <div className="flex-1 pb-20">
+      <div className="flex-1 pb-24">
         <Routes>
           <Route index element={<StudentHome />} />
           <Route path="bookings" element={<StudentBookings />} />
@@ -46,6 +48,7 @@ export function CustomerApp() {
         <BottomNav
           mode="customer"
           active={activeTab}
+          unreadCount={unreadCount}
           onChange={(k) => navigate(k === "home" ? "/customer" : `/customer/${k}`)}
         />
       )}

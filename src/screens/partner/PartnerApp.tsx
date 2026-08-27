@@ -8,11 +8,13 @@ import { PartnerProfile } from "./PartnerProfile";
 import { Wallet } from "./Wallet";
 import { PartnerAnalytics } from "./PartnerAnalytics";
 import { BusinessSettings } from "../shared/BusinessSettings";
+import { useAppStore } from "../../store/appStore";
 
 // Partner app shell — mirrors CustomerApp structure with partner routes.
 export function PartnerApp() {
   const navigate = useNavigate();
   const location = useLocation();
+  const unreadCount = useAppStore((s) => s.notifications.filter((n) => n.unread && n.forMode === "partner").length);
 
   const segment = location.pathname.replace("/partner/", "").split("/")[0];
   const activeTab = ["dashboard", "orders", "services", "profile"].includes(segment)
@@ -23,7 +25,7 @@ export function PartnerApp() {
 
   return (
     <div className="flex min-h-screen flex-col bg-neutral-50">
-      <div className="flex-1 pb-20">
+      <div className="flex-1 pb-24">
         <Routes>
           <Route index element={<PartnerDashboard />} />
           <Route path="orders" element={<IncomingOrders />} />
@@ -39,6 +41,7 @@ export function PartnerApp() {
         <BottomNav
           mode="partner"
           active={activeTab}
+          unreadCount={unreadCount}
           onChange={(k) => navigate(k === "dashboard" ? "/partner" : `/partner/${k}`)}
         />
       )}

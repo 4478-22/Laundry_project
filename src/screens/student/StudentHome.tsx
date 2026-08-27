@@ -217,7 +217,30 @@ export function StudentHome() {
         )}
       </div>
 
-      <div className="no-scrollbar mt-5 flex gap-2 overflow-x-auto px-5 pb-1">
+      {/* Express promo banner */}
+      <div className="px-5 mt-4">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-accent-400 to-accent-500 p-4 shadow-card">
+          <div className="relative z-10 flex items-center gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/25 backdrop-blur">
+              <Sparkles className="h-5 w-5 text-white" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-display text-sm font-bold text-white">Express service in 6 hours</p>
+              <p className="text-xs text-white/85 mt-0.5">Need it fast? Get priority turnaround.</p>
+            </div>
+            <button
+              onClick={() => setActiveCategory("Express")}
+              className="shrink-0 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-accent-600 active:scale-95 transition-transform"
+            >
+              Explore
+            </button>
+          </div>
+          <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" />
+          <div className="absolute -right-2 -bottom-8 h-16 w-16 rounded-full bg-white/10" />
+        </div>
+      </div>
+
+      <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto px-5 pb-1">
         {categories.map((category) => (
           <button key={category} onClick={() => setActiveCategory(category)} className={`chip whitespace-nowrap ${activeCategory === category ? "bg-primary-600 text-white" : "border border-neutral-200 bg-white text-neutral-600"}`}>
             {category}
