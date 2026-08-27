@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import type {
   AppMode,
   Booking,
@@ -128,17 +129,19 @@ const defaultWallet: PartnerWalletState = {
   transactions: dummyWalletTransactions,
 };
 
-export const useAppStore = create<AppState>((set) => ({
-  mode: "customer",
-  isAuthed: false,
-  isAcceptingOrders: true,
-  customer: defaultCustomer,
-  bookings: dummyOrders,
-  incomingOrders: dummyIncomingOrders,
-  savedLaundryIds: ["l-cleanpro"],
-  notifications: dummyNotifications,
-  businessSettings: defaultBusinessSettings,
-  partnerWallet: defaultWallet,
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      mode: "customer",
+      isAuthed: false,
+      isAcceptingOrders: true,
+      customer: defaultCustomer,
+      bookings: dummyOrders,
+      incomingOrders: dummyIncomingOrders,
+      savedLaundryIds: ["l-cleanpro"],
+      notifications: dummyNotifications,
+      businessSettings: defaultBusinessSettings,
+      partnerWallet: defaultWallet,
 
   setMode: (mode) => set({ mode }),
   login: () => set({ isAuthed: true }),
@@ -283,4 +286,17 @@ export const useAppStore = create<AppState>((set) => ({
       return {};
     }),
   getLaundry: (id) => dummyLaundries.find((l) => l.id === id),
-}));
+    }),
+    {
+      name: "laundex-store",
+      partialize: (s) => ({
+        bookings: s.bookings,
+        incomingOrders: s.incomingOrders,
+        customer: s.customer,
+        savedLaundryIds: s.savedLaundryIds,
+        partnerWallet: s.partnerWallet,
+        isAcceptingOrders: s.isAcceptingOrders,
+      }),
+    },
+  ),
+);
